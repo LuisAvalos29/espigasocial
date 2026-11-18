@@ -1,0 +1,60 @@
+ESPIGA SOCIAL - versión independiente (sin IA, sin suscripción)
+
+CÓMO PUBLICARLA EN NETLIFY
+1. Entra a https://app.netlify.com/drop (inicia sesión con tu cuenta).
+2. Descomprime este zip y arrastra la CARPETA completa a la página.
+   (Desde el iPhone puedes elegir el .zip directamente.)
+3. Netlify te da un enlace (algo como https://nombre.netlify.app).
+
+CÓMO INSTALARLA EN EL IPHONE
+1. Abre el enlace en Safari.
+2. Toca Compartir -> "Agregar a inicio".
+3. Usa SIEMPRE el ícono de la pantalla de inicio (sus datos son distintos a los de Safari).
+4. Agrega tus fotos desde la pestaña Fotos.
+
+IMPORTANTE
+- Las fotos y publicaciones se guardan solo en tu celular. Haz respaldos en la pestaña Más.
+- Para cambiar frases, usa la pestaña Frases (no necesitas tocar los archivos).
+
+CÓMO ACTUALIZAR (sin perder tus datos)
+1. Entra a app.netlify.com y abre tu sitio "espigadoradapublicacion".
+2. Ve a "Deploys" y arrastra la carpeta nueva al recuadro de esa página.
+   NO uses netlify.com/drop para actualizar: eso crea otro sitio con otro enlace,
+   y tus fotos y frases se quedarían en el anterior.
+3. En el iPhone, cierra la app por completo y vuelve a abrirla (a veces hay que hacerlo dos veces).
+
+FRASES NUEVAS CON CLAUDE (mientras tengas Claude Pro)
+1. En la app de Claude "Espiga Social" ve a Ideas -> "Paquete de frases", elige el mes y toca Generar.
+2. Descarga el paquete (o cópialo como texto).
+3. En esta app: Frases -> "Importar paquete de frases". Las frases nuevas se suman a las que ya tienes.
+También puedes pedirle a Claude en el chat: "hazme un paquete de frases de Espiga Social para enero".
+
+CONECTAR UNA IA (opcional)
+1. Gemini gratis: entra a aistudio.google.com con tu cuenta de Google -> "Get API key" -> crear clave -> cópiala.
+2. En la app: Más -> Conectar IA -> Proveedor: Gemini -> pega la clave -> "Guardar y probar".
+3. Listo: en Frases aparece "Generar frases del mes", en cada publicación "Texto con IA",
+   y en Más "Analizar mis resultados con IA".
+Si dice que el modelo no existe, escribe en "Modelo" el nombre que muestre Google AI Studio.
+Sin IA (o si se acaba el límite gratis), la app sigue funcionando con sus frases.
+
+TAREAS DE FACEBOOK (Semana -> Tareas de Facebook)
+1. Toma captura de las tareas semanales en Facebook (Panel profesional / Meta Business Suite).
+2. "Leer captura" (con IA conectada) o "A mano".
+3. "Preparar": la app crea los Reels (video con tus fotos), historias o publicaciones y los programa en la semana.
+4. A la hora: "Crear video del Reel" -> "Compartir / guardar video" -> en Facebook: Crear -> Reel.
+   Mientras se crea el video (unos 15 s) no cambies de app ni bloquees el celular.
+
+CONECTAR FACEBOOK (publicación automática)
+- En la app: Más -> Conectar Facebook -> "Ver pasos para obtener el token" (guía completa).
+- Política de privacidad para Meta: https://espigadoradapublicacion.netlify.app/privacidad.html
+- IMPORTANTE: la app de Meta debe estar en modo "En vivo"; en modo desarrollo solo tú ves lo publicado.
+- Luego en Semana -> "Programar en Facebook": fotos y Reels quedan programados en tu página y se publican solos.
+- Las historias no se pueden programar por Facebook: esas siguen apareciendo en Hoy.
+- Los resultados (personas que vieron, reacciones, comentarios, compartidos) se traen solos cada 6 horas.
+
+NUEVA ORGANIZACIÓN (versión multicanal)
+- Hoy: tu lista del día (Facebook, estados de WhatsApp, difusión, Google, grupos, respuestas, reseñas) y el contador de clientes en caja.
+- Plan: "Armar mi semana" según el plan de marketing (Reels, pregunta, producto, comunidad, promo), tareas de Facebook y envío a Facebook.
+- Canales: WhatsApp, Google, Grupos, Anuncios, Respuestas, Promos.
+- Resultados: reporte semanal, decisiones de la app, lectura de capturas y caja.
+- Más: Negocio, Fotos, Frases, Conexiones (IA y Facebook), Respaldo y guía.

@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Espiga Social</title>
+<meta name="theme-color" content="#2F5D3A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Espiga Social">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" href="icon-192.png">
+<style>
+:root{--oro:#D99A0B;--oro2:#F5C542;--verde:#2F5D3A;--crema:#FBF6EA;--papel:#fff;--tinta:#2B2418;--gris:#7A705F;--linea:#E9DFC7;--rojo:#B9442F}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--crema);color:var(--tinta);font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.45}
+body{padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+header{background:var(--verde);color:#fff;padding:calc(12px + env(safe-area-inset-top)) 16px 12px;position:sticky;top:0;z-index:5}
+header h1{margin:0;font-size:19px;font-weight:800}
+header .sub{font-size:13px;opacity:.85}
+main{max-width:640px;margin:0 auto;padding:14px}
+nav{position:fixed;bottom:0;left:0;right:0;background:var(--papel);border-top:1px solid var(--linea);display:flex;z-index:6;padding-bottom:env(safe-area-inset-bottom)}
+nav a{flex:1;text-align:center;padding:8px 2px 9px;color:var(--gris);text-decoration:none;font-size:11.5px;font-weight:700}
+nav a .ic{display:block;font-size:21px;line-height:1.2}
+nav a.on{color:var(--verde)}
+.card{background:var(--papel);border:1px solid var(--linea);border-radius:16px;padding:14px;margin-bottom:14px}
+.card h2{margin:0 0 8px;font-size:17px}.card h3{margin:0 0 6px;font-size:15px}
+.muted{color:var(--gris);font-size:14px}.small{font-size:13px}
+.btn{appearance:none;border:0;border-radius:12px;padding:12px 14px;font:inherit;font-weight:800;cursor:pointer;background:var(--oro);color:#fff;width:100%;margin-top:8px;display:block;text-align:center;text-decoration:none}
+.btn:disabled{opacity:.55}
+.btn.verde{background:var(--verde)}.btn.claro{background:#F3EBD6;color:var(--tinta)}
+.btn.borde{background:transparent;border:2px solid var(--linea);color:var(--tinta)}
+.btn.rojo{background:transparent;border:2px solid #EBC7BF;color:var(--rojo)}
+.row{display:flex;gap:8px}.row>*{flex:1}
+.pill{display:inline-block;background:#F3EBD6;border-radius:999px;padding:2px 9px;font-size:12px;font-weight:700;color:#6B5A2E;margin-right:4px}
+.pill.v{background:#DCEBDD;color:var(--verde)}.pill.r{background:#F6DED8;color:var(--rojo)}
+textarea,input,select{width:100%;font:inherit;padding:10px 11px;border-radius:10px;border:1px solid var(--linea);background:#fff;color:var(--tinta)}
+textarea{min-height:110px;resize:vertical}
+label{display:block;font-weight:700;font-size:14px;margin:10px 0 4px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.grid .it{position:relative;cursor:pointer}
+.grid .it img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;background:#EFE6CF}
+.grid .it .lab{font-size:11.5px;font-weight:700;line-height:1.2;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.grid .it .n{position:absolute;top:5px;right:5px;background:rgba(0,0,0,.6);color:#fff;font-size:11px;border-radius:8px;padding:1px 6px}
+.dia{font-weight:800;margin:16px 0 6px;color:var(--verde);text-transform:capitalize}
+.post{display:flex;gap:10px;align-items:flex-start;background:var(--papel);border:1px solid var(--linea);border-radius:14px;padding:10px;margin-bottom:8px;cursor:pointer}
+.post img{width:62px;height:62px;border-radius:10px;object-fit:cover;flex:none;background:#EFE6CF}
+.post .bd{flex:1;min-width:0}.post .t1{font-weight:800;font-size:14px}
+.post .t2{font-size:13px;color:var(--gris);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.post.hecha{opacity:.6}
+.aviso{background:#FFF4D6;border:1px solid #F0D58A;border-radius:12px;padding:10px 12px;font-size:14px;margin-bottom:12px}
+.paso{display:flex;gap:10px;align-items:center;margin-top:8px}
+.paso b.num{flex:none;width:26px;height:26px;border-radius:50%;background:var(--verde);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px}
+.paso .btn{margin-top:0}
+.big{font-size:28px;font-weight:800;color:var(--verde);line-height:1.1}
+.metric{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.metric input{padding:8px 6px;text-align:center}
+.metric span{display:block;font-size:11px;text-align:center;color:var(--gris);margin-top:2px}
+.modal{position:fixed;inset:0;background:rgba(30,25,15,.55);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.modal .sheet{background:var(--crema);width:100%;max-width:640px;max-height:92vh;overflow:auto;border-radius:18px 18px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom))}
+.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:var(--tinta);color:#fff;padding:10px 16px;border-radius:12px;font-weight:700;font-size:14px;z-index:30;max-width:90vw;text-align:center}
+.fb{background:#fff;border:1px solid #DADDE1;border-radius:10px;overflow:hidden;color:#050505}
+.fbh{display:flex;gap:8px;align-items:center;padding:10px 12px 6px}.fbh b{font-size:15px}
+.av{width:40px;height:40px;border-radius:50%;background:var(--oro2);display:flex;align-items:center;justify-content:center;font-size:22px;flex:none}
+.fbm{font-size:12.5px;color:#65676B}
+.fbt{padding:2px 12px 0;font-size:15px;white-space:pre-wrap;line-height:1.35}
+.fbt.corto{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.vermas{appearance:none;border:0;background:none;color:#65676B;font-weight:700;font-size:14px;padding:2px 12px 8px;cursor:pointer;font-family:inherit}
+.fb img{width:100%;display:block;max-height:520px;object-fit:cover;background:#EFE6CF}
+.fbbar{display:flex;justify-content:space-around;border-top:1px solid #E4E6EB;padding:8px 4px;font-size:13.5px;color:#65676B;font-weight:600}
+.frase{display:flex;gap:8px;align-items:flex-start;border-bottom:1px solid var(--linea);padding:8px 0;font-size:14px;white-space:pre-wrap}
+.frase span{flex:1}.frase button{appearance:none;border:0;background:#F6DED8;color:var(--rojo);border-radius:8px;padding:4px 9px;cursor:pointer;font:inherit;font-size:13px}
+.hora-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.hora-row input{width:auto;flex:none}
+.hora-row button{appearance:none;border:0;background:#F3EBD6;border-radius:8px;padding:8px 10px;cursor:pointer;font:inherit}
+.guia li{margin-bottom:8px}
+.hidden{display:none!important}
+.subnav{display:flex;gap:6px;overflow-x:auto;margin:-2px 0 12px;padding-bottom:2px;-webkit-overflow-scrolling:touch}
+.subnav a{flex:none;padding:7px 12px;border-radius:999px;background:#fff;border:1px solid var(--linea);text-decoration:none;color:var(--tinta);font-weight:700;font-size:13px}
+.subnav a.on{background:var(--verde);color:#fff;border-color:var(--verde)}
+.barra{height:10px;border-radius:6px;background:#F3EBD6;overflow:hidden}.barra div{height:100%;background:var(--verde)}
+.agenda{display:flex;gap:10px;align-items:center;border-top:1px solid var(--linea);padding:9px 0}
+.agenda .bd{flex:1;min-width:0;font-size:14px}.agenda.lista .bd{opacity:.55}
+.agenda .chk{appearance:none;flex:none;width:28px;height:28px;border-radius:8px;border:2px solid var(--linea);background:#fff;color:var(--verde);font-weight:800;cursor:pointer}
+.agenda.lista .chk{background:#DCEBDD;border-color:#DCEBDD}
+.agenda .mini{appearance:none;flex:none;border:0;border-radius:10px;background:var(--oro);color:#fff;font-weight:800;padding:8px 11px;font:inherit;font-size:13px;cursor:pointer}
+.caja{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.caja button{appearance:none;border:1px solid var(--linea);background:#fff;border-radius:12px;padding:10px 4px;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;color:var(--tinta)}
+.caja button b{display:block;font-size:22px;color:var(--verde)}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
+.kpis div{background:#FFFCF3;border:1px solid var(--linea);border-radius:12px;padding:10px}
+.kpis b{display:block;font-size:24px;color:var(--verde)}.kpis span{font-size:12.5px;color:var(--gris)}
+.dias{display:flex;flex-wrap:wrap;gap:8px}.dias label{display:flex;gap:4px;align-items:center;font-weight:600;margin:4px 0}.dias input{width:auto}
+</style>
+</head>
+<body>
+<header><h1>🌽 Espiga Social</h1><div class="sub" id="hdrSub"></div></header>
+<main id="app"><div class="card muted">Cargando…</div></main>
+<nav>
+  <a href="#hoy" data-v="hoy"><span class="ic">✅</span>Hoy</a>
+  <a href="#plan" data-v="plan"><span class="ic">🗓️</span>Plan</a>
+  <a href="#canales" data-v="canales"><span class="ic">📣</span>Canales</a>
+  <a href="#resultados" data-v="resultados"><span class="ic">📊</span>Resultados</a>
+  <a href="#mas" data-v="mas"><span class="ic">⚙️</span>Más</a>
+</nav>
+<input type="file" id="fileIn" accept="image/*" multiple class="hidden">
+<input type="file" id="restIn" accept=".json,application/json" class="hidden">
+<input type="file" id="tarIn" accept="image/*" multiple class="hidden">
+<input type="file" id="pkgIn" accept=".json,.txt,application/json,text/plain" class="hidden">
+<script src="banco.js"></script>
+<script src="facebook.js"></script>
+<script src="marketing.js"></script>
+<script>
+"use strict";
+/* ===================== Datos por defecto ===================== */
+const DEFAULT_CFG = {
+  nombre: "Tortillería La Espiga Dorada",
+  ciudad: "Macuspana, Tabasco",
+  direccion: "Cerrada a un costado de Del Sol, detrás de El Changarreo, frente a La Placita",
+  whatsapp: "936 106 0987",
+  horario: "de 6:00 am a 6:30 pm",
+  hashtags: "#Macuspana #MacuspanaTabasco #Tabasco #TortilleriaLaEspigaDorada #ComercioLocal",
+  horarios: ["07:30", "11:30", "16:30"],
+  horarioDomingo: ["10:00"],
+  probPregunta: 30
+};
+const PRODUCTO_DEF = { tortilla: "tortillas", huevo: "huevo Calvario", lacteos: "lácteos Lala", pan: "pan Bimbo", botanas: "botanas", refrescos: "refrescos", granos: "granos por kilo y bulto", despensa: "productos de despensa", hogar: "artículos para el hogar", general: "todo lo que necesitas" };
+const DIAS = ["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+const MESES = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+
+/* ===================== Almacenamiento (IndexedDB) ===================== */
+let IDB = null;
+function abrirDB(){
+  return new Promise((res, rej) => {
+    const r = indexedDB.open("espiga-social", 1);
+    r.onupgradeneeded = () => { const d = r.result; d.createObjectStore("kv"); d.createObjectStore("fotos", { keyPath: "id" }); };
+    r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+  });
+}
+function tx(store, mode, fn){
+  return new Promise((res, rej) => {
+    const t = IDB.transaction(store, mode), s = t.objectStore(store); let out;
+    const r = fn(s); if (r) r.onsuccess = () => out = r.result;
+    t.oncomplete = () => res(out); t.onerror = () => rej(t.error); t.onabort = () => rej(t.error);
+  });
+}
+const kvGet = k => tx("kv", "readonly", s => s.get(k));
+const kvSet = (k, v) => tx("kv", "readwrite", s => s.put(v, k));
+const fotosAll = () => tx("fotos", "readonly", s => s.getAll());
+const fotoPut = f => tx("fotos", "readwrite", s => s.put(f));
+const fotoDel = id => tx("fotos", "readwrite", s => s.delete(id));
+
+/* ===================== Estado ===================== */
+const S = { cfg: null, banco: null, posts: [], usados: [], fotos: [], urls: {}, editing: null, openPid: null };
+const $app = document.getElementById("app");
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+const clone = o => JSON.parse(JSON.stringify(o));
+async function guardarPosts(){ await kvSet("posts", S.posts); }
+async function guardarCfg(){ await kvSet("cfg", S.cfg); }
+async function guardarBanco(){ await kvSet("banco", S.banco); }
+
+/* ===================== Utilidades ===================== */
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pad = n => String(n).padStart(2, "0");
+const ymd = d => d.getFullYear() + "-" + pad(d.getMonth()+1) + "-" + pad(d.getDate());
+const parseYmd = s => { const [y,m,d] = s.split("-").map(Number); return new Date(y, m-1, d); };
+const fechaBonita = s => { const d = parseYmd(s); return DIAS[d.getDay()] + " " + d.getDate() + " " + MESES[d.getMonth()]; };
+const hoyStr = () => ymd(new Date());
+const ahoraHM = () => { const d = new Date(); return pad(d.getHours()) + ":" + pad(d.getMinutes()); };
+const dt = p => { const d = parseYmd(p.fecha); const [h,m] = p.hora.split(":").map(Number); d.setHours(h, m, 0, 0); return d; };
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const fotoById = id => S.fotos.find(f => f.id === id);
+const urlFoto = f => { if (!f) return ""; if (!S.urls[f.id]) S.urls[f.id] = URL.createObjectURL(f.blob); return S.urls[f.id]; };
+function toast(msg, ms = 2400){ const t = document.createElement("div"); t.className = "toast"; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), ms); }
+function modal(html){
+  const m = document.createElement("div"); m.className = "modal";
+  m.innerHTML = '<div class="sheet">' + html + '</div>';
+  m.addEventListener("click", e => { if (e.target === m) cerrarModal(m); });
+  document.body.appendChild(m); return m;
+}
+function cerrarModal(m){ m.remove(); S.openPid = null; S.editing = null; }
+function confirmar(msg, ok = "Sí, continuar"){
+  return new Promise(res => {
+    const m = modal('<p style="font-weight:700;margin-top:0">' + esc(msg) + '</p><div class="row"><button class="btn borde" data-r="0">Cancelar</button><button class="btn rojo" data-r="1">' + esc(ok) + '</button></div>');
+    m.querySelectorAll("[data-r]").forEach(b => b.onclick = () => { m.remove(); res(b.dataset.r === "1"); });
+  });
+}
+async function copiar(text){
+  try { await navigator.clipboard.writeText(text); toast("✅ Texto copiado"); }
+  catch(e){
+    const m = modal('<h3 style="margin-top:0">Copia el texto</h3><p class="muted small">Mantén presionado el texto → "Seleccionar todo" → "Copiar".</p><textarea readonly style="min-height:220px">' + esc(text) + '</textarea><button class="btn claro">Listo</button>');
+    const ta = m.querySelector("textarea"); ta.focus(); ta.select(); m.querySelector("button").onclick = () => m.remove();
+  }
+}
+function descargar(nombre, blob){
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = nombre;
+  document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 4000);
+}
+function usoFoto(fid){ let n = 0, ult = null; for (const p of S.posts) if (p.fotoId === fid && p.estado !== "omitida") { n++; if (!ult || p.fecha > ult) ult = p.fecha; } return { n, ult }; }
+
+/* ===================== Productos ===================== */
+const prodDe = f => f && f.prod && S.banco.productos && S.banco.productos[f.prod] ? S.banco.productos[f.prod] : null;
+function adivinarProd(texto, categoria){
+  const t = " " + String(texto || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") + " ";
+  for (const [k, p] of Object.entries(S.banco.productos || {})) if ((p.claves || []).some(c => t.includes(c.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")))) return k;
+  return ({ tortilla: "tortilla", huevo: "huevo", general: "tienda" })[categoria] || "";
+}
+function nombreFoto(f){ const p = prodDe(f); return f.producto || (p ? p.nombre : S.banco.categorias[f.categoria] || ""); }
+function opcionesProd(sel){
+  const P = S.banco.productos, grupos = {};
+  Object.entries(P).forEach(([k, p]) => (grupos[p.cat] = grupos[p.cat] || []).push([k, p]));
+  return '<option value="">— Elige el producto —</option>' + Object.entries(grupos).map(([cat, l]) => '<optgroup label="' + esc((S.banco.categorias[cat] || cat).split(" (")[0]) + '">' + l.map(([k, p]) => '<option value="' + k + '"' + (k === sel ? " selected" : "") + '>' + esc(p.nombre) + '</option>').join("") + '</optgroup>').join("");
+}
+
+/* ===================== Combinador de frases ===================== */
+function momento(hora){ const h = Number(hora.slice(0, 2)); return h < 10 ? "manana" : h < 14 ? "mediodia" : "tarde"; }
+function pascua(y){ const a=y%19,b=Math.floor(y/100),c=y%100,d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451),mes=Math.floor((h+l-7*m+114)/31),dia=((h+l-7*m+114)%31)+1; return new Date(y, mes-1, dia); }
+function fechasActivas(fecha){
+  const d = parseYmd(fecha), md = pad(d.getMonth()+1) + "-" + pad(d.getDate());
+  const ultimo = new Date(d.getFullYear(), d.getMonth()+1, 0).getDate();
+  return (S.banco.fechas || []).filter(f => {
+    if (f.id === "quincena") return [14,15,16].includes(d.getDate()) || d.getDate() >= ultimo - 1 || d.getDate() === 1;
+    if (f.id === "cuaresma") { const p = pascua(d.getFullYear()); const ini = new Date(p); ini.setDate(p.getDate() - 46); const fin = new Date(p); fin.setDate(p.getDate() - 3); return d >= ini && d <= fin; }
+    if (!f.desde || !f.hasta) return false;
+    return f.desde <= f.hasta ? (md >= f.desde && md <= f.hasta) : (md >= f.desde || md <= f.hasta);
+  });
+}
+function elegirFrase(lista){
+  if (!lista || !lista.length) return "";
+  const libres = lista.filter(t => !S.usados.includes(t));
+  const t = pick(libres.length ? libres : lista);
+  S.usados.push(t); if (S.usados.length > 40) S.usados = S.usados.slice(-40);
+  return t;
+}
+function rellenar(t, foto){
+  const c = S.cfg, cat = foto ? foto.categoria || "general" : "general";
+  const pr = prodDe(foto);
+  return t.replace(/\{producto\}/g, (foto && foto.producto) || (pr && pr.nombre) || PRODUCTO_DEF[cat] || "nuestros productos")
+    .replace(/\{nombre\}/g, c.nombre).replace(/\{ciudad\}/g, c.ciudad).replace(/\{direccion\}/g, c.direccion)
+    .replace(/\{whatsapp\}/g, c.whatsapp).replace(/\{horario\}/g, c.horario);
+}
+function componer(fecha, hora, foto){
+  const B = S.banco, cat = foto ? foto.categoria || "general" : "general", pr = prodDe(foto);
+  const ganchos = B.ganchos.filter(g => g.m === momento(hora) || g.m === "*").map(g => g.t);
+  const partes = [];
+  // Productos específicos usan su propia primera línea; tortilla y tienda mezclan con las generales.
+  const mezcla = !pr || pr.cat === "tortilla" || pr.cat === "general";
+  partes.push(pr && pr.ganchos && pr.ganchos.length && (!mezcla || Math.random() < 0.5) ? elegirFrase(pr.ganchos) : elegirFrase(ganchos));
+  const esp = fechasActivas(fecha);
+  if (esp.length && Math.random() < 0.75) partes.push(elegirFrase(pick(esp).frases));
+  partes.push(elegirFrase(pr && pr.frases && pr.frases.length ? pr.frases : B.cuerpos[cat] && B.cuerpos[cat].length ? B.cuerpos[cat] : B.cuerpos.general));
+  if (Math.random() * 100 < (S.cfg.probPregunta ?? 30)) partes.push(elegirFrase(B.preguntas));
+  partes.push(elegirFrase(B.cierres));
+  const tags = (S.cfg.hashtags + " " + ((pr && pr.tags) || B.tagsCategoria[cat] || "")).trim();
+  return partes.filter(Boolean).map(t => rellenar(t, foto)).join("\n\n") + "\n\n" + tags;
+}
+
+/* ===================== Programación ===================== */
+function elegirFotos(n){
+  const uso = {}; S.fotos.forEach(f => uso[f.id] = usoFoto(f.id));
+  const hace7 = (() => { const d = new Date(); d.setDate(d.getDate() - 7); return ymd(d); })();
+  const res = []; let prev = null;
+  for (let i = 0; i < n; i++) {
+    let c = S.fotos.filter(f => !prev || (f.id !== prev.id && f.categoria !== prev.categoria));
+    if (!c.length) c = S.fotos.filter(f => !prev || f.id !== prev.id);
+    if (!c.length) c = S.fotos.slice();
+    const w = c.map(f => { const u = uso[f.id]; let x = 1 / (1 + u.n); if (u.ult && u.ult >= hace7) x *= 0.25; if (f.categoria === "tortilla") x *= 1.5; if (S.mkt && S.mkt.retirados && S.mkt.retirados[f.prod] > hoyStr()) x *= 0.02; return x; });
+    let r = Math.random() * w.reduce((a,b) => a+b, 0), k = 0;
+    while (k < c.length - 1 && (r -= w[k]) > 0) k++;
+    res.push(c[k]); prev = c[k]; uso[c[k].id] = { n: uso[c[k].id].n + 1, ult: hoyStr() };
+  }
+  return res;
+}
+async function programar(desde, dias){
+  if (!S.fotos.length) { toast("Primero agrega fotos"); return; }
+  const cambio = await ajustarHorarios();
+  if (cambio) toast("📈 Horarios ajustados según tus resultados: " + cambio.despues.join(", "), 5000);
+  const ocup = new Set(S.posts.filter(p => p.estado !== "omitida").map(p => p.fecha + " " + p.hora));
+  const now = new Date(), slots = [];
+  for (let i = 0; i < dias; i++) {
+    const d = parseYmd(desde); d.setDate(d.getDate() + i);
+    for (const h of (d.getDay() === 0 ? S.cfg.horarioDomingo : S.cfg.horarios) || []) {
+      const s = { fecha: ymd(d), hora: h }; if (dt(s) > now && !ocup.has(s.fecha + " " + h)) slots.push(s);
+    }
+  }
+  if (!slots.length) { toast("No hay horarios libres en esas fechas"); return; }
+  const fotos = elegirFotos(slots.length);
+  slots.forEach((s, i) => S.posts.push({ id: uid(), fecha: s.fecha, hora: s.hora, fotoId: fotos[i].id, texto: componer(s.fecha, s.hora, fotos[i]), estado: "pendiente", resultados: null }));
+  S.posts.sort((a,b) => (a.fecha + a.hora).localeCompare(b.fecha + b.hora));
+  await guardarPosts(); await kvSet("usados", S.usados);
+  toast("✅ " + slots.length + " publicaciones programadas"); render();
+}
+async function publicacionAhora(){
+  if (!S.fotos.length) { toast("Primero agrega fotos"); return; }
+  const f = elegirFotos(1)[0], p = { id: uid(), fecha: hoyStr(), hora: ahoraHM(), fotoId: f.id, estado: "pendiente", resultados: null };
+  p.texto = componer(p.fecha, p.hora, f);
+  S.posts.push(p); S.posts.sort((a,b) => (a.fecha + a.hora).localeCompare(b.fecha + b.hora));
+  await guardarPosts(); await kvSet("usados", S.usados);
+  location.hash = "#hoy"; render();
+}
+function icsTexto(posts){
+  const f = d => d.getFullYear() + pad(d.getMonth()+1) + pad(d.getDate()) + "T" + pad(d.getHours()) + pad(d.getMinutes()) + "00";
+  const escI = s => String(s).replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\n/g, "\\n");
+  const st = new Date(), stamp = st.getUTCFullYear() + pad(st.getUTCMonth()+1) + pad(st.getUTCDate()) + "T" + pad(st.getUTCHours()) + pad(st.getUTCMinutes()) + "00Z";
+  let s = "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Espiga Social//ES\r\nCALSCALE:GREGORIAN\r\n";
+  posts.forEach(p => {
+    const d = dt(p), e = new Date(d.getTime() + 15*60000);
+    s += "BEGIN:VEVENT\r\nUID:" + p.id + "@espiga-social\r\nDTSTAMP:" + stamp + "\r\nDTSTART:" + f(d) + "\r\nDTEND:" + f(e) + "\r\nSUMMARY:" + escI("📣 Publicar en Facebook") + "\r\nDESCRIPTION:" + escI("Abre Espiga Social: la foto y el texto ya están listos.\n\n" + p.texto.split("\n")[0]) + "\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:" + escI("Publicar en Facebook") + "\r\nTRIGGER:PT0M\r\nEND:VALARM\r\nEND:VEVENT\r\n";
+  });
+  return s + "END:VCALENDAR\r\n";
+}
+function exportarCalendario(posts){
+  if (!posts.length) { toast("No hay publicaciones pendientes"); return; }
+  descargar("espiga-publicaciones.ics", new Blob([icsTexto(posts)], { type: "text/calendar" }));
+  toast("Ábrelo y toca \"Agregar todo\" en tu calendario", 3500);
+}
+
+/* ===================== Fotos ===================== */
+async function comprimir(file){
+  let src, w, h, url = null;
+  try { src = await createImageBitmap(file, { imageOrientation: "from-image" }); w = src.width; h = src.height; }
+  catch(e){ url = URL.createObjectURL(file); src = await new Promise((r, j) => { const i = new Image(); i.onload = () => r(i); i.onerror = j; i.src = url; }); w = src.naturalWidth; h = src.naturalHeight; }
+  const k = Math.min(1, 1600 / Math.max(w, h)), c = document.createElement("canvas");
+  c.width = Math.round(w*k); c.height = Math.round(h*k); c.getContext("2d").drawImage(src, 0, 0, c.width, c.height);
+  if (url) URL.revokeObjectURL(url);
+  return await new Promise(r => c.toBlob(r, "image/jpeg", 0.85));
+}
+async function onFiles(ev){
+  const files = [...ev.target.files]; ev.target.value = ""; if (!files.length) return;
+  const nuevas = [];
+  for (let i = 0; i < files.length; i++) {
+    toast("Guardando foto " + (i+1) + " de " + files.length + "…", 1200);
+    try { const blob = await comprimir(files[i]); const f = { id: uid(), blob, categoria: "general", producto: "", creada: new Date().toISOString() }; await fotoPut(f); S.fotos.unshift(f); nuevas.push(f); }
+    catch(e){ toast("No se pudo guardar " + (files[i].name || "una foto")); }
+  }
+  render();
+  if (nuevas.length) etiquetar(nuevas, 0);
+}
+function opcionesCat(sel){ return Object.entries(S.banco.categorias).map(([k, v]) => '<option value="' + k + '"' + (k === sel ? " selected" : "") + '>' + esc(v) + '</option>').join(""); }
+function etiquetar(lista, i){
+  const f = lista[i]; if (!f) { toast("✅ Fotos listas"); return; }
+  const m = modal('<p class="muted small" style="margin-top:0">Foto ' + (i+1) + ' de ' + lista.length + ': ¿qué producto es?</p><img src="' + urlFoto(f) + '" style="width:100%;border-radius:12px;max-height:45vh;object-fit:cover"><label>Producto</label><select id="eCat">' + opcionesProd(f.prod) + '</select><label>Nombre a mostrar <span class="muted small">(opcional, ej. "Leche Lala deslactosada")</span></label><input id="eProd" value="' + esc(f.producto) + '"><div class="row"><button class="btn borde" data-x="skip">Saltar</button><button class="btn verde" data-x="ok">Siguiente</button></div>');
+  const fin = async guardar => {
+    if (guardar) { aplicarProd(f, m); await fotoPut(f); }
+    m.remove(); render(); etiquetar(lista, i + 1);
+  };
+  autoProd(m);
+  m.querySelector('[data-x="ok"]').onclick = () => fin(true);
+  m.querySelector('[data-x="skip"]').onclick = () => fin(false);
+}
+function aplicarProd(f, m){
+  f.producto = m.querySelector("#eProd").value.trim();
+  const v = m.querySelector("#eCat").value;
+  f.prod = (v && v !== "__nuevo") ? v : adivinarProd(f.producto, f.categoria);
+  const p = prodDe(f); if (p) f.categoria = p.cat;
+}
+function autoProd(m){
+  const sel = m.querySelector("#eCat"), inp = m.querySelector("#eProd");
+  sel.insertAdjacentHTML("beforeend", '<option value="__nuevo">＋ Nuevo producto…</option>');
+  sel.addEventListener("change", () => {
+    if (sel.value !== "__nuevo") return;
+    nuevoProducto(key => { sel.innerHTML = opcionesProd(key || "") + '<option value="__nuevo">＋ Nuevo producto…</option>'; sel.value = key || ""; });
+  });
+  inp.addEventListener("input", () => { if (!sel.value || sel.dataset.auto) { const k = adivinarProd(inp.value, ""); if (k) { sel.value = k; sel.dataset.auto = "1"; } } });
+  sel.addEventListener("change", () => delete sel.dataset.auto);
+}
+function abrirFoto(fid){
+  const f = fotoById(fid); if (!f) return; const u = usoFoto(fid);
+  const m = modal('<img src="' + urlFoto(f) + '" style="width:100%;border-radius:12px;max-height:50vh;object-fit:cover"><label>Producto</label><select id="eCat">' + opcionesProd(f.prod) + '</select><label>Nombre a mostrar <span class="muted small">(opcional)</span></label><input id="eProd" value="' + esc(f.producto) + '"><p class="muted small">Usada ' + u.n + ' veces' + (u.ult ? ' · última: ' + esc(fechaBonita(u.ult)) : "") + '</p><button class="btn verde" data-x="ok">Guardar</button><button class="btn rojo" data-x="del">Eliminar foto</button><button class="btn borde" data-x="c">Cerrar</button>');
+  m.querySelector('[data-x="c"]').onclick = () => m.remove();
+  autoProd(m);
+  m.querySelector('[data-x="ok"]').onclick = async () => { aplicarProd(f, m); await fotoPut(f); m.remove(); toast("Guardado"); render(); };
+  m.querySelector('[data-x="del"]').onclick = async () => {
+    if (!await confirmar("¿Eliminar esta foto de la app? (No se borra de tu galería)", "Eliminar")) return;
+    await fotoDel(fid); S.fotos = S.fotos.filter(x => x.id !== fid); m.remove(); render();
+  };
+}
+async function compartirFoto(p){
+  const f = fotoById(p.fotoId); if (!f) return;
+  const file = new File([f.blob], "espiga.jpg", { type: "image/jpeg" });
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    try { await navigator.share({ files: [file] }); } catch(e){ if (e.name !== "AbortError") toast("No se pudo compartir"); }
+  } else { descargar("espiga.jpg", f.blob); toast("Foto descargada"); }
+}
+
+/* ===================== Vistas ===================== */
+const RUTAS = { hoy: [], plan: [], canales: SUB_CANALES, resultados: [["resumen", "📈 Resumen"], ["captura", "📷 Leer captura"], ["caja", "🧾 Caja"]], mas: [["negocio", "🏪 Negocio"], ["fotos", "📷 Fotos"], ["frases", "✍️ Frases"], ["conexiones", "🔌 Conexiones"], ["respaldo", "💾 Respaldo y guía"]] };
+function ruta(){
+  let h = (location.hash || "#hoy").slice(1);
+  const alias = { semana: "plan", fotos: "mas-fotos", frases: "mas-frases" }; if (alias[h]) h = alias[h];
+  let [main, sub] = h.split("-"); if (!RUTAS[main]) main = "hoy";
+  const subs = RUTAS[main]; if (subs.length && !subs.some(x => x[0] === sub)) sub = subs[0][0];
+  return { main, sub };
+}
+function vista(){ return ruta().main; }
+function render(){
+  const { main, sub } = ruta();
+  document.querySelectorAll("nav a").forEach(a => a.classList.toggle("on", a.dataset.v === main));
+  document.getElementById("hdrSub").textContent = S.cfg.nombre + " · " + S.cfg.ciudad;
+  let h = RUTAS[main].length ? subnav(main, RUTAS[main], sub) : "";
+  if (main === "hoy") h += vHoyNuevo();
+  else if (main === "plan") h += vSemana();
+  else if (main === "canales") h += vCanal(sub);
+  else if (main === "resultados") h += vResultados(sub);
+  else h += ({ negocio: vMasNegocio, fotos: vFotos, frases: vFrases, conexiones: vMasConexiones, respaldo: vMasRespaldo })[sub]();
+  $app.innerHTML = h;
+  if (main === "hoy") { bind("hoy"); bindHoyNuevo(); }
+  else if (main === "plan") bind("semana");
+  else if (main === "canales") { bind("x"); bindCanal(sub); }
+  else if (main === "resultados") { bind("mas"); bindResultados(sub); }
+  else bind(sub === "fotos" ? "fotos" : sub === "frases" ? "frases" : "mas");
+  pintarModal();
+}
+function estadoPill(p){
+  if (p.estado === "publicada") return '<span class="pill v">Publicada</span>';
+  if (p.estado === "omitida") return '<span class="pill r">Omitida</span>';
+  return dt(p) < new Date() ? '<span class="pill r">Pendiente</span>' : '<span class="pill">Programada</span>';
+}
+function filaPost(p){
+  const f = fotoById(p.fotoId), r = p.resultados && p.resultados.alcance != null ? " · 👁 " + p.resultados.alcance : "";
+  return '<div class="post' + (p.estado !== "pendiente" ? " hecha" : "") + '" data-open="' + p.id + '">' + (f ? '<img src="' + urlFoto(f) + '" alt="">' : '<img alt="">') + '<div class="bd"><div class="t1">' + esc(p.hora) + (p.formato === "reel" ? " 🎬 Reel" : p.formato === "historia" ? " 📱 Historia" : p.sinFoto ? " 💬 Pregunta" : "") + ' ' + estadoPill(p) + pillClase(p) + '</div><div class="t2">' + esc(p.texto.slice(0, 160)) + r + '</div></div></div>';
+}
+function vistaFacebook(p, f){
+  return '<p class="muted small" style="margin:12px 0 4px">Así se verá en Facebook:</p><div class="fb"><div class="fbh"><div class="av">🌽</div><div><b>' + esc(S.cfg.nombre) + '</b><div class="fbm">Justo ahora · 🌎</div></div></div><div class="fbt corto">' + esc(p.texto) + '</div><button type="button" class="vermas" data-vermas>Ver más</button>' + (f ? '<img src="' + urlFoto(f) + '" alt="">' : "") + '<div class="fbbar"><span>👍 Me gusta</span><span>💬 Comentar</span><span>↗ Compartir</span></div></div>';
+}
+function tarjeta(p, destacada){
+  if (p.formato === "reel" || p.formato === "historia") return tarjetaEspecial(p, destacada);
+  const f = fotoById(p.fotoId), ed = S.editing === p.id;
+  let h = '<div class="card" data-pid="' + p.id + '">';
+  h += destacada ? '<div class="big">¡Ahora toca publicar!</div><p class="muted" style="margin-top:4px">' + esc(fechaBonita(p.fecha)) + ' · ' + esc(p.hora) + '</p>' : '<h2>' + esc(fechaBonita(p.fecha)) + ' · ' + esc(p.hora) + '</h2>';
+  h += '<p style="margin:6px 0">' + estadoPill(p) + pillClase(p) + (f ? '<span class="pill">' + esc(nombreFoto(f)) + '</span>' : "") + '</p>';
+  if (ed) h += '<label>Edita el texto</label><textarea id="edTxt" style="min-height:240px">' + esc(p.texto) + '</textarea><div class="row"><button class="btn borde" data-act="cancelEd">Cancelar</button><button class="btn verde" data-act="saveEd">Guardar</button></div>';
+  else h += vistaFacebook(p, f);
+  if (p.fbEstado === "programada" && p.estado === "pendiente" && !ed) h += fbBox(p);
+  else if (p.estado === "pendiente" && !ed) {
+    h += fbBotonUno(p);
+    h += '<div class="paso"><b class="num">1</b><button class="btn verde" data-act="copiar">Copiar texto</button></div>';
+    if (f) h += '<div class="paso"><b class="num">2</b><button class="btn claro" data-act="compartir">Compartir foto</button></div>';
+    h += '<div class="paso"><b class="num">' + (f ? 3 : 2) + '</b><a class="btn" href="https://www.facebook.com/" target="_blank" rel="noopener">Abrir Facebook</a></div>';
+    h += '<p class="muted small">Tip: con "Compartir foto" puedes mandarla directo a Facebook y ahí pegas el texto. Si Facebook no aparece, guárdala en tu galería y publícala desde Facebook.</p>';
+    h += '<button class="btn verde" data-act="hecha">✔ Ya lo publiqué</button>';
+    h += '<div class="row"><button class="btn borde" data-act="editar">✏️ Editar</button><button class="btn borde" data-act="otro">🔄 Otra combinación</button></div>';
+    if (iaLista()) h += '<button class="btn claro" data-act="textoIA"' + (S.iaPost === p.id ? " disabled" : "") + '>' + (S.iaPost === p.id ? "✨ La IA está viendo la foto…" : "✨ Texto con IA (mirando la foto)") + '</button>';
+    h += '<div class="row"><button class="btn borde" data-act="cal">📅 Al calendario</button><button class="btn rojo" data-act="omitir">Omitir</button></div>';
+  }
+  if (p.estado === "publicada") {
+    const r = p.resultados || {};
+    h += '<div style="margin-top:12px"><h3>📊 ¿Cómo le fue?</h3><p class="muted small">Unas 24 horas después, copia los números de Facebook. Así sabrás qué horarios te funcionan mejor (pestaña Más).</p><div class="metric">';
+    [["alcance","Alcance"],["reacciones","Reacc."],["comentarios","Coment."],["compartidos","Compart."],["mensajes","Mensajes"]].forEach(([k,l]) => h += '<div><input type="number" inputmode="numeric" min="0" data-met="' + k + '" value="' + (r[k] ?? "") + '"><span>' + l + '</span></div>');
+    h += '</div><button class="btn claro" data-act="res">Guardar resultados</button>' + (iaLista() ? '<button class="btn borde" data-act="capRes">📷 Leer de una captura</button>' : '') + '</div>';
+  }
+  if (p.estado !== "pendiente") h += '<button class="btn borde" data-act="reabrir">Regresar a pendiente</button>';
+  return h + '</div>';
+}
+function vHoy(){
+  const now = new Date(), lim = new Date(now.getTime() + 60*60000);
+  const pend = S.posts.filter(p => p.estado === "pendiente" && p.fbEstado !== "programada"), venc = pend.filter(p => dt(p) <= lim);
+  const actual = venc[venc.length - 1], prox = pend.find(p => dt(p) > lim);
+  const atras = venc.filter(p => p !== actual && dt(p) >= new Date(now.getTime() - 36*3600000));
+  let h = "";
+  if (!S.fotos.length) h += '<div class="aviso">👋 ¡Bienvenido! Empieza en la pestaña <b>Fotos</b> agregando fotos de tus productos. Después ve a <b>Semana</b> para programar.</div>';
+  if (actual) h += tarjeta(actual, true);
+  else h += '<div class="card"><h2>Por ahora no toca publicar 🙌</h2>' + (prox ? '<p class="muted">La próxima es el <b>' + esc(fechaBonita(prox.fecha)) + '</b> a las <b>' + esc(prox.hora) + '</b>.</p><button class="btn claro" data-open="' + prox.id + '">Ver la próxima</button>' : '<p class="muted">No tienes publicaciones programadas.</p><a class="btn verde" href="#semana">Programar semana</a>') + '</div>';
+  if (atras.length) { h += '<div class="card"><h3>Pendientes atrasadas (' + atras.length + ')</h3>'; atras.forEach(p => h += filaPost(p)); h += '</div>'; }
+  h += '<div class="card"><h3>⚡ ¿Publicar algo ya?</h3><p class="muted small">Elige una foto al azar y arma el texto al momento.</p><button class="btn" id="btnAhora"' + (S.fotos.length ? "" : " disabled") + '>Publicación ahora</button></div>';
+  const hoy = S.posts.filter(p => p.fecha === hoyStr());
+  if (hoy.length) { h += '<div class="card"><h3>Hoy</h3>'; hoy.forEach(p => h += filaPost(p)); h += '</div>'; }
+  return h;
+}
+function vSemana(){
+  const ua = S.ultimoArmado;
+  let h = '<div class="card"><h2>🗓️ Armar mi semana</h2><p class="small">La app arma 7 días con tu plan de marketing: <b>' + S.mkt.mezcla.reels + ' Reels</b> y <b>' + S.mkt.mezcla.feed + ' publicaciones</b> (una pregunta para conversar, una de producto y una de comunidad' + (promoActiva() ? ', y tu promo activa' : '') + '). No repite fotos recientes, respeta máximo 2 publicaciones al día y usa tus mejores horarios. Estados, Google y grupos te aparecen cada día en <b>Hoy</b>.</p><label>Desde</label><input type="date" id="plDesde" value="' + hoyStr() + '">' + (S.armando ? '<button class="btn" disabled>⏳ ' + esc(S.armandoMsg || "Armando tu semana…") + '</button>' : '<button class="btn" id="btnPlan"' + (S.fotos.length ? "" : " disabled") + '>✨ Armar 7 días</button>') + (ua ? '<div class="aviso" style="margin-top:10px">✅ Listo: ' + ua.reels + ' Reels y ' + ua.feed + ' publicaciones.' + (ua.horarios ? '<br>📈 Horarios ajustados: ' + esc(ua.horarios.join(", ")) : '') + (ua.dec && ua.dec.length ? '<br>🧠 ' + ua.dec.map(esc).join("<br>🧠 ") : '') + '</div>' : '') + '</div>' + vTareas();
+  const futuras = S.posts.filter(p => p.fecha >= hoyStr()), pend = futuras.filter(p => p.estado === "pendiente" && p.fbEstado !== "programada" && dt(p) > new Date());
+  h += vFacebookSemana();
+  h += '<div class="card"><h3>📅 Recordatorios con alarma</h3><p class="muted small">La app no puede avisarte estando cerrada (el iPhone no lo permite a las páginas web). Por eso las alarmas las pone el <b>Calendario del iPhone</b>: este botón agrega tus publicaciones pendientes, cada una con alarma a su hora, y suenan aunque la app esté cerrada.</p>' +
+    (pend.length ? '<button class="btn verde" id="btnIcs">Agregar ' + pend.length + ' al calendario</button><p class="muted small">Al tocarlo, el iPhone te mostrará los eventos: toca <b>"Agregar todo"</b>. Si no pasa nada, abre tu enlace de Netlify en Safari y tócalo desde ahí.</p>' : '<p class="small"><b>Primero programa tu semana</b> (abajo, botón ✨ Programar) y aquí aparecerá el botón para mandarlas al calendario.</p>') + '</div>';
+  if (!futuras.length) h += '<div class="card muted">No hay publicaciones programadas.</div>';
+  let dia = "";
+  futuras.forEach(p => { if (p.fecha !== dia) { dia = p.fecha; h += '<div class="dia">' + esc(fechaBonita(p.fecha)) + (p.fecha === hoyStr() ? " · hoy" : "") + '</div>'; } h += filaPost(p); });
+  if (futuras.some(p => p.estado === "pendiente")) h += '<button class="btn claro" id="btnRehacer" style="margin-top:14px">🔄 Rehacer textos pendientes</button><button class="btn rojo" id="btnBorrar">Borrar pendientes</button>';
+  const pas = S.posts.filter(p => p.fecha < hoyStr()).slice(-21).reverse();
+  if (pas.length) { h += '<div class="dia" style="color:var(--gris)">Anteriores</div>'; pas.forEach(p => h += filaPost(p)); }
+  return h;
+}
+function vFotos(){
+  let h = '<div class="card"><h2>📷 Fotos de tus productos</h2><p class="muted small">Agrega fotos de tu galería (puedes elegir varias). A cada una dile de qué producto es, para que el texto combine.</p><button class="btn verde" id="btnSubir">＋ Agregar fotos</button><p class="muted small" style="margin-bottom:0">' + S.fotos.length + ' fotos guardadas en este celular.</p>' + (S.fotos.some(f => !f.prod) ? '<div class="aviso" style="margin:10px 0 0">⚠️ Algunas fotos no tienen producto exacto. Tócalas y elige el producto para que el texto hable de él.</div>' : "") + '</div>';
+  if (S.fotos.length) {
+    h += '<div class="grid">';
+    S.fotos.forEach(f => h += '<div class="it" data-foto="' + f.id + '"><img loading="lazy" src="' + urlFoto(f) + '" alt=""><span class="n">' + usoFoto(f.id).n + '×</span><div class="lab">' + esc(nombreFoto(f)) + (f.prod ? "" : " ⚠️") + '</div></div>');
+    h += '</div>';
+  }
+  return h;
+}
+const SECCIONES = () => [["ganchos","Primeras líneas generales"], ...Object.entries(S.banco.productos).map(([k,p]) => ["p:" + k, "Producto · " + p.nombre]), ["c:general","Textos generales"], ["fechas","Fechas especiales"], ["preguntas","Preguntas para conversar"], ["cierres","Cierres (ubicación y WhatsApp)"]];
+function vFrases(){
+  const sec = S.secFrases || "ganchos";
+  let h = '<div class="card"><h2>✍️ Tus frases</h2><p class="muted small">Cada publicación junta: una primera línea + (fecha especial) + texto del producto + (pregunta) + cierre + hashtags. Agrega, quita o cambia frases cuando quieras.</p><p class="muted small">Puedes usar: {producto} {nombre} {direccion} {whatsapp} {horario}</p><div class="row" style="margin-bottom:10px"><button class="btn claro" id="btnNuevoProd" style="margin:0">＋ Nuevo producto</button><button class="btn claro" id="btnPkg" style="margin:0">📥 Importar paquete</button></div><select id="secSel">' + SECCIONES().map(([k,v]) => '<option value="' + k + '"' + (k === sec ? " selected" : "") + '>' + esc(v) + '</option>').join("") + '</select></div><div class="card">';
+  h = vFrasesIA() + h;
+  const lista = listaSeccion(sec);
+  if (sec.startsWith("p:")) {
+    const k = sec.slice(2), pr = S.banco.productos[k];
+    [["ganchos","Primeras líneas de este producto"],["frases","Textos de este producto"]].forEach(([campo, tit]) => {
+      h += '<h3 style="margin-top:12px">' + tit + '</h3>';
+      (pr[campo] || []).forEach((t, i) => h += '<div class="frase"><span>' + esc(t) + '</span><button data-delp="' + campo + ':' + i + '">✕</button></div>');
+      h += '<div class="row" style="margin-top:6px"><input data-addp-in="' + campo + '" placeholder="Nueva frase…"><button class="btn claro" style="flex:none;width:auto;margin:0" data-addp="' + campo + '">＋</button></div>';
+    });
+    if (iaLista()) h += S.iaOcupada ? '<button class="btn" disabled>✨ Escribiendo…</button>' : '<button class="btn" id="btnIAProd">✨ Escribir más frases con IA (1 consulta)</button>';
+    if (pr.propio) h += '<button class="btn rojo" id="btnDelProd">🗑 Eliminar este producto</button>';
+  } else if (sec === "fechas") {
+    S.banco.fechas.forEach((f, i) => { h += '<h3 style="margin-top:12px">' + esc(f.nombre) + (f.desde ? ' <span class="muted small">(' + esc(f.desde) + ' a ' + esc(f.hasta) + ')</span>' : "") + '</h3>'; f.frases.forEach((t, j) => h += '<div class="frase"><span>' + esc(t) + '</span><button data-delf="' + i + ':' + j + '">✕</button></div>'); h += '<div class="row"><input data-addf-in="' + i + '" placeholder="Nueva frase para ' + esc(f.nombre) + '"><button class="btn claro" style="flex:none;width:auto;margin:0" data-addf="' + i + '">＋</button></div>'; });
+  } else {
+    lista.forEach((t, i) => h += '<div class="frase"><span>' + (sec === "ganchos" ? '<span class="pill">' + ({ manana: "mañana", mediodia: "mediodía", tarde: "tarde", "*": "cualquier hora" })[t.m] + '</span>' + esc(t.t) : esc(t)) + '</span><button data-del="' + i + '">✕</button></div>');
+    h += '<label>Agregar frase</label>' + (sec === "ganchos" ? '<select id="nuevaM"><option value="*">Cualquier hora</option><option value="manana">Mañana</option><option value="mediodia">Mediodía</option><option value="tarde">Tarde</option></select>' : "") + '<textarea id="nueva" style="min-height:70px" placeholder="Escribe la frase…"></textarea><button class="btn verde" id="btnAddFrase">Agregar</button>';
+  }
+  h += '</div><div class="card"><h3>🔍 Probar</h3><p class="muted small">Arma un ejemplo con una foto al azar para ver cómo combinan tus frases.</p><button class="btn claro" id="btnProbar"' + (S.fotos.length ? "" : " disabled") + '>Ver ejemplo</button><button class="btn rojo" id="btnReset">Restaurar frases originales</button></div>';
+  return h;
+}
+function vFrasesIA(){
+  if (!iaLista()) return '<div class="card"><h3>✨ Frases con IA</h3><p class="muted small">Conecta una IA (Gemini, Claude o ChatGPT) en <b>Más → Conexiones</b> para que escriba frases nuevas cuando quieras. Sin IA, la app sigue combinando las frases que ya tienes.</p></div>';
+  const MESL = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"], d = new Date();
+  const opts = [0,1,2].map(i => { const x = new Date(d.getFullYear(), d.getMonth() + i, 1); return '<option value="' + x.getFullYear() + "-" + pad(x.getMonth()+1) + '">' + MESL[x.getMonth()] + " " + x.getFullYear() + '</option>'; }).join("");
+  const nG = Math.ceil((Object.keys(S.banco.productos).length - 1) / 8) + 1;
+  return '<div class="card"><h3>✨ Frases del mes con IA <span class="pill v">' + esc(IA_DEF[S.ia.proveedor].nombre) + '</span></h3><p class="muted small">La IA escribe frases nuevas para todos tus productos (incluidos los nuevos) y las fechas especiales del mes. Se suman a las que ya tienes. Usa ' + nG + ' consultas.</p><div class="row"><div><label>Mes</label><select id="iaMes">' + opts + '</select></div><div><label>Frases por producto</label><select id="iaN"><option>3</option><option selected>5</option><option>8</option></select></div></div>' +
+    (S.iaOcupada ? '<button class="btn" disabled>⏳ ' + esc(S.iaMsg || "Trabajando…") + '</button>' : '<button class="btn verde" id="btnIAMes">✨ Generar frases del mes</button>') + '</div>';
+}
+function listaSeccion(sec){ if (sec === "ganchos") return S.banco.ganchos; if (sec === "preguntas") return S.banco.preguntas; if (sec === "cierres") return S.banco.cierres; if (sec.startsWith("c:")) { const k = sec.slice(2); return S.banco.cuerpos[k] = S.banco.cuerpos[k] || []; } return []; }
+function estadisticas(){
+  const con = S.posts.filter(p => p.estado === "publicada" && p.resultados && p.resultados.alcance != null);
+  if (con.length < 3) return '<p class="muted small">Cuando anotes resultados de al menos 3 publicaciones, aquí verás qué horarios y productos te dan más alcance.</p>';
+  const tabla = (titulo, key) => {
+    const g = {}; con.forEach(p => { const k = key(p); g[k] = g[k] || { n: 0, a: 0 }; g[k].n++; g[k].a += p.resultados.alcance || 0; });
+    const filas = Object.entries(g).map(([k, v]) => [k, Math.round(v.a / v.n), v.n]).sort((a,b) => b[1] - a[1]);
+    const max = filas[0][1] || 1;
+    return '<h3 style="margin-top:12px">' + titulo + '</h3>' + filas.map(([k, a, n]) => '<div class="small" style="margin:4px 0"><b>' + esc(k) + '</b> · ' + a + ' personas en promedio (' + n + ')<div style="height:8px;border-radius:4px;background:var(--oro2);width:' + Math.max(4, Math.round(a / max * 100)) + '%"></div></div>').join("");
+  };
+  return tabla("Por hora", p => p.hora) + tabla("Por día", p => DIAS[parseYmd(p.fecha).getDay()]) + tabla("Por producto", p => { const f = fotoById(p.fotoId); return f ? nombreFoto(f) : "Sin foto"; });
+}
+function horasHTML(arr, id){ return '<div class="hora-row" id="' + id + '">' + arr.map(t => '<input type="time" value="' + esc(t) + '"><button type="button" data-delh>✕</button>').join("") + '<button type="button" data-addh="' + id + '">＋ Hora</button></div>'; }
+function vResultadosEstadisticas(){
+  const c = S.cfg;
+  let h = '<div class="card"><h2>📈 Mis resultados</h2>' + estadisticas();
+  const totalRes = Object.values(statsHoras()).reduce((a, v) => a + v.n, 0);
+  h += '<label>Ajustar mis horarios automáticamente</label><select id="cAuto"><option value="1"' + (c.autoHorarios !== false ? " selected" : "") + '>Sí, según mis resultados</option><option value="0"' + (c.autoHorarios === false ? " selected" : "") + '>No, yo los elijo</option></select>';
+  h += '<p class="muted small">' + (c.autoHorarios === false ? "Los horarios no se cambian solos." : totalRes < 10 ? "Se activa al tener 10 publicaciones con resultados (llevas " + totalRes + "). Cada vez que programes, la app pasa tus horarios a los que mejor te funcionan y deja uno para probar horas nuevas." : "Activo: cada vez que programes, la app revisa tus resultados y ajusta los horarios de lunes a sábado.") + '</p>';
+  (S.ajustes || []).slice(-3).reverse().forEach(a => h += '<p class="small">📈 ' + esc(fechaBonita(a.fecha.slice(0, 10))) + ': ' + esc(a.antes.join(", ")) + ' → <b>' + esc(a.despues.join(", ")) + '</b>' + (a.mejor ? ' (la mejor: ' + esc(a.mejor) + ')' : "") + '</p>');
+  if (iaLista()) {
+    h += '<button class="btn claro" id="btnAnaIA"' + (S.iaOcupada || totalRes < 3 ? " disabled" : "") + '>' + (S.iaOcupada ? "✨ Analizando…" : "✨ Analizar mis resultados con IA") + '</button>';
+    if (S.analisisIA) h += '<div class="aviso" style="margin-top:10px;white-space:pre-wrap">' + esc(S.analisisIA) + '</div>';
+  }
+  h += '</div>';
+  return h;
+}
+function vMasConexiones(){
+  const ia = S.ia || {}, prov = ia.proveedor || "gemini";
+  let h = vFacebookMas();
+  h += '<div class="card"><h2>🤖 Conectar IA</h2><p class="muted small">Con una IA conectada puedes generar frases del mes, frases para productos nuevos, textos mirando la foto y análisis de resultados. La clave se guarda <b>solo en este celular</b> y no se incluye en los respaldos.</p>' +
+    '<label>Proveedor</label><select id="iaProv">' + Object.entries(IA_DEF).map(([k, v]) => '<option value="' + k + '"' + (k === prov ? " selected" : "") + '>' + esc(v.nombre) + '</option>').join("") + '</select><p class="muted small" id="iaAyuda">' + esc(IA_DEF[prov].ayuda) + '</p>' +
+    '<label>Clave de API</label><input id="iaClave" type="password" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Pega aquí tu clave" value="' + esc(ia.clave || "") + '">' + (ia.clave ? '<p class="muted small">Clave guardada: <b>' + esc(ia.clave.slice(0, 4) + "…" + ia.clave.slice(-4)) + '</b> (' + ia.clave.length + ' caracteres). No tienes que volver a pegarla.</p>' : "") + '' +
+    '<label>Modelo <span class="muted small">(déjalo vacío para usar el recomendado)</span></label><input id="iaModelo" placeholder="' + esc(IA_DEF[prov].modelo || "nombre-del-modelo") + '" value="' + esc(ia.modelo || "") + '">' +
+    '<div id="iaUrlBox"' + (prov === "otro" ? "" : ' class="hidden"') + '><label>Dirección (URL base)</label><input id="iaUrl" placeholder="https://…/v1" value="' + esc(ia.url || "") + '"></div>' +
+    '<button class="btn verde" id="btnIAGuardar">Guardar y probar</button>' + (ia.clave ? '<button class="btn rojo" id="btnIAQuitar">Desconectar IA</button>' : "") + '</div>';
+  h += '<div class="card"><h3>🔑 ¿La clave de IA caduca?</h3><p class="small">No por tiempo: si no la quitas, sigue funcionando. Puede dejar de servir si la borras en Google AI Studio, si Google la desactiva (por ejemplo, si se publica por error) o si Google cambia sus reglas o el plan gratuito. Si un día falla, la app te avisa, <b>sigue funcionando con tu banco de frases</b> y solo tienes que crear una clave nueva y pegarla aquí.</p></div>';
+  return h;
+}
+function vMasNegocio(){
+  const c = S.cfg, horas = horasHTML;
+  let h = '';
+  h += '<div class="card"><h2>⚙️ Datos del negocio</h2><label>Nombre</label><input id="cNombre" value="' + esc(c.nombre) + '"><label>Ciudad</label><input id="cCiudad" value="' + esc(c.ciudad) + '"><label>Ubicación</label><input id="cDir" value="' + esc(c.direccion) + '"><label>WhatsApp</label><input id="cWa" value="' + esc(c.whatsapp) + '"><label>Horario de atención</label><input id="cHor" value="' + esc(c.horario) + '"><label>Hashtags fijos</label><input id="cTags" value="' + esc(c.hashtags) + '">';
+  h += '<label>Horarios para publicar (lunes a sábado)</label>' + horas(c.horarios, "hLS") + '<label>Domingo</label>' + horas(c.horarioDomingo, "hDom");
+  h += '<label>¿Qué tan seguido agregar una pregunta al final?</label><select id="cPreg">' + [[0,"Nunca"],[30,"A veces"],[60,"Seguido"],[100,"Siempre"]].map(([v,l]) => '<option value="' + v + '"' + (Number(c.probPregunta) === v ? " selected" : "") + '>' + l + '</option>').join("") + '</select><button class="btn verde" id="btnCfg">Guardar</button></div>';
+  return h;
+}
+function vMasRespaldo(){
+  const c = S.cfg;
+  let h = '';
+  h += '<div class="card"><h2>💾 Respaldo</h2><p class="muted small">Tus fotos, frases y publicaciones se guardan solo en este celular. Haz un respaldo de vez en cuando (por ejemplo, guárdalo en iCloud Drive o mándatelo por WhatsApp). Sirve también para pasar todo a otro celular.</p><button class="btn claro" id="btnResp">Descargar respaldo</button><button class="btn borde" id="btnRest">Restaurar desde respaldo</button></div>';
+  h += '<div class="card"><h2>🔔 Avisos a la hora</h2><p class="small">La app no puede sonar estando cerrada. Usa el botón <b>"Agregar al calendario"</b> en <b>Plan</b> (cada publicación con alarma) o crea alarmas que se repitan en la app <b>Reloj</b> a tus horarios (' + esc(c.horarios.join(", ")) + '). Lo que esté programado en Facebook se publica solo y no necesita alarma.</p></div>';
+  h += '<div class="card guia"><h2>📘 Cómo trabaja la app</h2><ol class="small"><li><b>Hoy</b>: tu lista del día en todos los canales (Facebook, WhatsApp, Google, grupos) y el contador de clientes en caja.</li><li><b>Plan</b>: arma tu semana con la mezcla que decide la app (Reels, preguntas, producto, comunidad y promos) y la manda a Facebook.</li><li><b>Canales</b>: WhatsApp, Google, grupos, anuncios, respuestas y promos, con todo listo para copiar.</li><li><b>Resultados</b>: reporte semanal, lo que decidió la app y lectura de capturas.</li><li>La app compara cada publicación contra <b>tu propio promedio</b>, cambia una sola cosa a la vez y solo recomienda pagar anuncios cuando algo ya funcionó solo.</li><li>Con IA conectada, renueva tus frases cada mes sola.</li></ol></div>';
+  return h;
+}
+
+/* ===================== Eventos ===================== */
+function bind(v){
+  const q = id => document.getElementById(id) || {};
+  $app.querySelectorAll("[data-open]").forEach(el => el.onclick = () => abrirPost(el.dataset.open));
+  $app.querySelectorAll("[data-pid]").forEach(c => bindTarjeta(c));
+  if (v === "hoy") q("btnAhora").onclick = publicacionAhora;
+  if (v === "semana") {
+    bindTareas();
+    bindFacebookSemana();
+    q("btnPlan").onclick = () => armarSemana(q("plDesde").value || hoyStr());
+    q("btnIcs") && (q("btnIcs").onclick = () => exportarCalendario(S.posts.filter(p => p.estado === "pendiente" && p.fbEstado !== "programada" && dt(p) > new Date())));
+    q("btnRehacer") && (q("btnRehacer").onclick = async () => { const l = S.posts.filter(p => p.fecha >= hoyStr() && p.estado === "pendiente" && !p.formato); l.forEach(p => p.texto = componer(p.fecha, p.hora, fotoById(p.fotoId))); await guardarPosts(); await kvSet("usados", S.usados); toast("✨ " + l.length + " textos rehechos"); render(); });
+    q("btnBorrar") && (q("btnBorrar").onclick = async () => { if (!await confirmar("¿Borrar todas las publicaciones pendientes desde hoy? Las fotos no se borran.", "Borrar")) return; S.posts = S.posts.filter(p => !(p.fecha >= hoyStr() && p.estado === "pendiente")); await guardarPosts(); render(); });
+  }
+  if (v === "fotos") { q("btnSubir").onclick = () => q("fileIn").click(); $app.querySelectorAll("[data-foto]").forEach(el => el.onclick = () => abrirFoto(el.dataset.foto)); }
+  if (v === "frases") {
+    const sec = S.secFrases || "ganchos";
+    q("secSel").onchange = e => { S.secFrases = e.target.value; render(); };
+    q("btnPkg").onclick = abrirImportar;
+    q("btnNuevoProd").onclick = () => nuevoProducto(key => { if (key) { S.secFrases = "p:" + key; render(); } });
+    q("btnIAMes") && (q("btnIAMes").onclick = async () => {
+      S.iaOcupada = true; S.iaMsg = "Empezando…"; render();
+      try { const n = await paqueteMesIA(q("iaMes").value, Number(q("iaN").value)); toast("✅ Listo: " + n + " frases nuevas", 4000); }
+      catch(e){ toast(e.message, 6000); }
+      S.iaOcupada = false; S.iaMsg = ""; render();
+    });
+    q("btnIAProd") && (q("btnIAProd").onclick = async () => {
+      S.iaOcupada = true; render();
+      try { const n = await frasesProductoIA(sec.slice(2)); toast("✅ " + n + " frases nuevas", 3500); } catch(e){ toast(e.message, 6000); }
+      S.iaOcupada = false; render();
+    });
+    q("btnDelProd") && (q("btnDelProd").onclick = async () => {
+      const k = sec.slice(2), usadas = S.fotos.filter(f => f.prod === k).length;
+      if (!await confirmar("¿Eliminar el producto \"" + S.banco.productos[k].nombre + "\" y sus frases?" + (usadas ? " Tiene " + usadas + " fotos: quedarán como \"La tienda en general\"." : ""), "Eliminar")) return;
+      for (const f of S.fotos.filter(f => f.prod === k)) { f.prod = "tienda"; f.categoria = "general"; await fotoPut(f); }
+      delete S.banco.productos[k]; await guardarBanco(); S.secFrases = "ganchos"; render();
+    });
+    $app.querySelectorAll("[data-del]").forEach(b => b.onclick = async () => { const l = listaSeccion(sec); if (l.length <= 1) { toast("Deja al menos una frase"); return; } l.splice(Number(b.dataset.del), 1); await guardarBanco(); render(); });
+    $app.querySelectorAll("[data-delp]").forEach(b => b.onclick = async () => { const [campo, i] = b.dataset.delp.split(":"); const l = S.banco.productos[sec.slice(2)][campo]; if (campo === "frases" && l.length <= 1) { toast("Deja al menos un texto"); return; } l.splice(Number(i), 1); await guardarBanco(); render(); });
+    $app.querySelectorAll("[data-addp]").forEach(b => b.onclick = async () => { const campo = b.dataset.addp, inp = $app.querySelector('[data-addp-in="' + campo + '"]'), t = inp.value.trim(); if (!t) return; const pr = S.banco.productos[sec.slice(2)]; (pr[campo] = pr[campo] || []).push(t); await guardarBanco(); toast("Frase agregada"); render(); });
+    $app.querySelectorAll("[data-delf]").forEach(b => b.onclick = async () => { const [i, j] = b.dataset.delf.split(":").map(Number); S.banco.fechas[i].frases.splice(j, 1); await guardarBanco(); render(); });
+    $app.querySelectorAll("[data-addf]").forEach(b => b.onclick = async () => { const i = Number(b.dataset.addf), inp = $app.querySelector('[data-addf-in="' + i + '"]'); const t = inp.value.trim(); if (!t) return; S.banco.fechas[i].frases.push(t); await guardarBanco(); render(); });
+    q("btnAddFrase") && (q("btnAddFrase").onclick = async () => { const t = q("nueva").value.trim(); if (!t) return; const l = listaSeccion(sec); l.push(sec === "ganchos" ? { m: q("nuevaM").value, t } : t); await guardarBanco(); toast("Frase agregada"); render(); });
+    q("btnProbar").onclick = () => { const k = sec.startsWith("p:") ? sec.slice(2) : null, delProd = k ? S.fotos.filter(x => x.prod === k) : [], f = delProd.length ? pick(delProd) : pick(S.fotos), hora = ahoraHM(); const m = modal(vistaFacebook({ texto: componer(hoyStr(), hora, f) }, f) + '<button class="btn borde">Cerrar</button>'); m.querySelector(".btn").onclick = () => m.remove(); };
+    q("btnReset").onclick = async () => { if (!await confirmar("¿Regresar todas las frases a las originales? Se pierden las que agregaste.", "Restaurar")) return; S.banco = clone(BANCO_INICIAL); await guardarBanco(); render(); };
+  }
+  if (v === "mas") {
+    $app.querySelectorAll("[data-addh]").forEach(b => b.onclick = () => { const row = q(b.dataset.addh), i = document.createElement("input"), x = document.createElement("button"); i.type = "time"; i.value = "12:00"; x.type = "button"; x.textContent = "✕"; x.onclick = () => { i.remove(); x.remove(); }; row.insertBefore(i, b); row.insertBefore(x, b); });
+    $app.querySelectorAll("[data-delh]").forEach(b => b.onclick = () => { b.previousElementSibling.remove(); b.remove(); });
+    q("btnCfg").onclick = async () => {
+      const g = id => q(id).value.trim(), hs = id => [...new Set([...document.querySelectorAll("#" + id + " input[type=time]")].map(i => i.value).filter(Boolean))].sort();
+      Object.assign(S.cfg, { nombre: g("cNombre"), ciudad: g("cCiudad"), direccion: g("cDir"), whatsapp: g("cWa"), horario: g("cHor"), hashtags: g("cTags"), horarios: hs("hLS"), horarioDomingo: hs("hDom"), probPregunta: Number(q("cPreg").value) });
+      await guardarCfg(); toast("Guardado ✅"); render();
+    };
+    q("btnResp").onclick = respaldo;
+    q("cAuto").onchange = async e => { S.cfg.autoHorarios = e.target.value === "1"; await guardarCfg(); toast("Guardado"); render(); };
+    q("iaProv").onchange = e => { const k = e.target.value; q("iaAyuda").textContent = IA_DEF[k].ayuda; q("iaModelo").placeholder = IA_DEF[k].modelo || "nombre-del-modelo"; q("iaUrlBox").classList.toggle("hidden", k !== "otro"); };
+    q("btnIAGuardar").onclick = async () => {
+      const nuevo = { proveedor: q("iaProv").value, clave: limpiarClave(q("iaClave").value), modelo: q("iaModelo").value.trim(), url: q("iaUrl").value.trim() };
+      if (!nuevo.clave) { toast("Pega tu clave de API"); return; }
+      const antes = S.ia; S.ia = nuevo; q("btnIAGuardar").disabled = true; q("btnIAGuardar").textContent = "Probando conexión…";
+      try { await iaLlamar("Responde solo con la palabra: listo"); await kvSet("ia", nuevo); toast("✅ IA conectada: " + IA_DEF[nuevo.proveedor].nombre + (nuevo.modeloOk ? " (modelo " + nuevo.modeloOk + ")" : ""), 4000); }
+      catch(e){ S.ia = antes; toast("No se pudo conectar: " + e.message, 7000); }
+      render();
+    };
+    bindFacebookMas();
+    q("btnIAQuitar") && (q("btnIAQuitar").onclick = async () => { if (!await confirmar("¿Desconectar la IA? La app seguirá funcionando con tus frases.", "Desconectar")) return; S.ia = null; await kvSet("ia", null); render(); });
+    q("btnAnaIA") && (q("btnAnaIA").onclick = async () => {
+      S.iaOcupada = true; render();
+      const filas = S.posts.filter(p => p.estado === "publicada" && p.resultados && p.resultados.alcance != null).slice(-60).map(p => { const f = fotoById(p.fotoId); return [DIAS[parseYmd(p.fecha).getDay()], p.fecha, p.hora, f ? nombreFoto(f) : "", (p.texto || "").split("\n")[0].slice(0, 70), JSON.stringify(p.resultados)].join(" | "); }).join("\n");
+      try { S.analisisIA = await iaLlamar("Eres analista de redes sociales para " + S.cfg.nombre + " en " + S.cfg.ciudad + ". Estos son los resultados de sus publicaciones de Facebook (día | fecha | hora | producto | primera línea | resultados; alcance = personas que la vieron). Horarios actuales lun-sáb: " + S.cfg.horarios.join(", ") + ".\n\n" + filas + "\n\nExplica en 3-5 frases sencillas, sin tecnicismos, qué horarios, días, productos y tipos de primera línea funcionan mejor, y da 3 acciones concretas. Hay pocos datos: no exageres. Texto plano, sin markdown; usa • para las acciones."); }
+      catch(e){ toast(e.message, 6000); }
+      S.iaOcupada = false; render();
+    });
+    q("btnRest").onclick = () => q("restIn").click();
+  }
+}
+function bindTarjeta(card){
+  if (!card) return;
+  const pid = card.dataset.pid, P = () => S.posts.find(x => x.id === pid);
+  const on = (a, fn) => card.querySelectorAll('[data-act="' + a + '"]').forEach(b => b.onclick = fn);
+  const upd = async (data, msg) => { Object.assign(P(), data); await guardarPosts(); if (msg) toast(msg); render(); };
+  on("copiar", () => copiar(P().texto));
+  on("compartir", () => compartirFoto(P()));
+  on("hecha", () => upd({ estado: "publicada", publicadaEn: new Date().toISOString() }, "¡Bien! Publicada 🎉"));
+  on("omitir", () => upd({ estado: "omitida" }, "Omitida"));
+  on("reabrir", () => upd({ estado: "pendiente" }));
+  on("editar", () => { S.editing = pid; render(); });
+  on("cancelEd", () => { S.editing = null; render(); });
+  on("saveEd", () => { const t = card.querySelector("#edTxt").value; S.editing = null; upd({ texto: t }, "Guardado"); });
+  on("otro", async () => { const p = P(); p.texto = componer(p.fecha, p.hora, fotoById(p.fotoId)); await kvSet("usados", S.usados); upd({}, "Nueva combinación ✨"); });
+  on("cal", () => exportarCalendario([P()]));
+  on("fbUno", () => fbProgramarVarios([P()]));
+  on("capRes", () => leerCapturaDe(pid));
+  on("fbCancelar", () => fbCancelar(P()));
+  on("video", async () => {
+    const p = P(); S.media[pid] = { cargando: true, prog: 0 }; render();
+    try { const blob = await crearVideoReel(p, x => { S.media[pid].prog = x; const el = document.querySelector('[data-prog="' + pid + '"]'); if (el) el.textContent = Math.round(x * 100) + "%"; }); S.media[pid] = { blob, url: URL.createObjectURL(blob), tipo: "video" }; }
+    catch(e){ S.media[pid] = null; toast(e.message, 6000); }
+    render();
+  });
+  on("histImg", async () => {
+    try { const blob = await crearImagenHistoria(P()); S.media[pid] = { blob, url: URL.createObjectURL(blob), tipo: "img" }; } catch(e){ toast(e.message, 5000); }
+    render();
+  });
+  on("compMedia", () => compartirMedia(S.media[pid], P().formato));
+  on("textoIA", async () => {
+    S.iaPost = pid; render();
+    try { const t = await textoIAPublicacion(P()); S.iaPost = null; upd({ texto: t, porIA: true }, "✨ Texto nuevo escrito por la IA"); }
+    catch(e){ S.iaPost = null; toast(e.message, 6000); render(); }
+  });
+  on("res", () => { const r = {}; card.querySelectorAll("[data-met]").forEach(i => { if (i.value !== "") r[i.dataset.met] = Math.max(0, Number(i.value) || 0); }); upd({ resultados: r }, "Resultados guardados 📊"); });
+}
+function abrirPost(pid){ S.openPid = pid; const m = modal('<div id="mPost"></div><button class="btn borde" data-x="c">Cerrar</button>'); S.modalPost = m; m.querySelector('[data-x="c"]').onclick = () => cerrarModal(m); pintarModal(); }
+function pintarModal(){
+  if (!S.openPid || !S.modalPost || !document.body.contains(S.modalPost)) return;
+  const p = S.posts.find(x => x.id === S.openPid), box = S.modalPost.querySelector("#mPost");
+  box.innerHTML = p ? tarjeta(p, false) : '<p class="muted">Ya no existe.</p>'; bindTarjeta(box.querySelector("[data-pid]"));
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest && e.target.closest("[data-vermas]"); if (!b) return;
+  const t = b.previousElementSibling; t.classList.toggle("corto"); b.textContent = t.classList.contains("corto") ? "Ver más" : "Ver menos";
+});
+
+/* ===================== IA conectable ===================== */
+const IA_DEF = {
+  gemini: { nombre: "Gemini (Google)", modelo: "gemini-flash-latest", ayuda: "Saca tu clave gratis en aistudio.google.com → \"Get API key\"." },
+  claude: { nombre: "Claude (Anthropic)", modelo: "claude-haiku-5-5", ayuda: "Saca tu clave en console.anthropic.com (se paga por uso)." },
+  openai: { nombre: "ChatGPT (OpenAI)", modelo: "gpt-5-mini", ayuda: "Saca tu clave en platform.openai.com (se paga por uso)." },
+  otro:   { nombre: "Otra IA (compatible con OpenAI)", modelo: "", ayuda: "Escribe la dirección (URL base) y el modelo que te indique el proveedor." }
+};
+const iaLista = () => !!(S.ia && S.ia.clave && IA_DEF[S.ia.proveedor]);
+const esperar = ms => new Promise(r => setTimeout(r, ms));
+const blobABase64 = b => new Promise(r => { const fr = new FileReader(); fr.onload = () => r({ mime: b.type || "image/jpeg", data: String(fr.result).split(",")[1] }); fr.readAsDataURL(b); });
+function iaMsgError(status, msg){
+  if (status === 429) return "Se alcanzó el límite de la IA (por minuto o del día). Espera un rato e intenta de nuevo.";
+  if (status === 401 || status === 403) return "La clave no es válida o no tiene permiso. Revísala en Más → Conexiones.";
+  if (status === 404) return "Ese modelo no existe. Revisa el nombre del modelo en Más → Conexiones.";
+  if (status === 400) return "La IA rechazó la petición: " + (msg || "revisa la clave y el modelo") + ".";
+  if (status >= 500) return "El servicio de IA está saturado o fallando en este momento. Intenta en unos minutos." + (msg ? " (Detalle: " + msg + ")" : "");
+  return msg || "No se pudo hablar con la IA.";
+}
+function limpiarClave(t){
+  // Quita espacios, saltos de línea, comillas y caracteres invisibles que a veces se pegan al copiar.
+  let k = String(t || "").replace(/[\s ​-‍⁠﻿"'“”‘’]/g, "");
+  if (k.length % 2 === 0 && k.length > 20 && k.slice(0, k.length / 2) === k.slice(k.length / 2)) k = k.slice(0, k.length / 2); // pegada dos veces
+  return k;
+}
+const GEMINI_MODELOS = ["gemini-flash-latest", "gemini-flash-lite-latest", "gemini-2.5-flash", "gemini-2.5-flash-lite"];
+async function geminiLlamar(prompt, imgs, json){
+  // Prueba el modelo elegido y, si está saturado o no existe, otros modelos Flash; recuerda el que funcionó.
+  const lista = [...new Set([S.ia.modelo, S.ia.modeloOk, ...GEMINI_MODELOS].filter(Boolean))];
+  let ultimo = null;
+  for (const modelo of lista) {
+    for (let intento = 0; intento < 2; intento++) {
+      let r;
+      try {
+        r = await fetch("https://generativelanguage.googleapis.com/v1beta/models/" + encodeURIComponent(modelo) + ":generateContent?key=" + encodeURIComponent(S.ia.clave), { method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: prompt }, ...imgs.map(i => ({ inline_data: { mime_type: i.mime, data: i.data } }))] }], generationConfig: json ? { responseMimeType: "application/json" } : {} }) });
+      } catch(e){
+        // Error de red: reintenta una vez y luego prueba otro modelo.
+        ultimo = { red: true, msg: (e && e.message) || "" };
+        if (intento === 0) { await esperar(2000); continue; }
+        break;
+      }
+      const j = await r.json().catch(() => ({}));
+      if (r.ok) {
+        if (S.ia.modeloOk !== modelo) { S.ia.modeloOk = modelo; kvSet("ia", S.ia).catch(() => {}); }
+        return ((j.candidates && j.candidates[0] && j.candidates[0].content && j.candidates[0].content.parts) || []).map(x => x.text || "").join("");
+      }
+      ultimo = { status: r.status, msg: (j.error && j.error.message) || "" };
+      if (r.status === 401 || r.status === 403 || r.status === 429 || (r.status === 400 && !/model/i.test(ultimo.msg))) throw ultimo;
+      if (r.status >= 500 && intento === 0) { await esperar(2500); continue; }
+      break; // 404 o error de modelo: probar el siguiente
+    }
+  }
+  if (ultimo && ultimo.red) throw ultimo;
+  throw ultimo || { status: 0, msg: "" };
+}
+async function iaLlamar(prompt, opts = {}){
+  if (!iaLista()) throw new Error("No hay IA conectada.");
+  const p = S.ia.proveedor, modelo = S.ia.modelo || IA_DEF[p].modelo, imgs = [];
+  for (const b of opts.images || []) imgs.push(await blobABase64(b));
+  let r, j, text = "";
+  try {
+    if (p === "gemini") {
+      text = await geminiLlamar(prompt, imgs, opts.json);
+    } else if (p === "claude") {
+      r = await fetch("https://api.anthropic.com/v1/messages", { method: "POST", headers: { "content-type": "application/json", "x-api-key": S.ia.clave, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
+        body: JSON.stringify({ model: modelo, max_tokens: 8000, messages: [{ role: "user", content: [...imgs.map(i => ({ type: "image", source: { type: "base64", media_type: i.mime, data: i.data } })), { type: "text", text: prompt }] }] }) });
+      j = await r.json().catch(() => ({}));
+      if (!r.ok) throw { status: r.status, msg: j.error && j.error.message };
+      text = (j.content || []).filter(c => c.type === "text").map(c => c.text).join("");
+    } else {
+      const base = p === "openai" ? "https://api.openai.com/v1" : String(S.ia.url || "").replace(/\/+$/, "");
+      if (!base) throw { status: 0, msg: "Falta la dirección (URL) de la IA." };
+      const content = imgs.length ? [{ type: "text", text: prompt }, ...imgs.map(i => ({ type: "image_url", image_url: { url: "data:" + i.mime + ";base64," + i.data } }))] : prompt;
+      r = await fetch(base + "/chat/completions", { method: "POST", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + S.ia.clave }, body: JSON.stringify({ model: modelo, messages: [{ role: "user", content }] }) });
+      j = await r.json().catch(() => ({}));
+      if (!r.ok) throw { status: r.status, msg: j.error && j.error.message };
+      text = (j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content) || "";
+    }
+  } catch(e){
+    if (e && e.status !== undefined) throw new Error(iaMsgError(e.status, e.msg) + (e.status ? " [código " + e.status + "]" : ""));
+    const det = (e && (e.msg || e.message)) || "";
+    throw new Error("No se pudo llegar al servidor de la IA. Revisa tu internet o intenta en unos minutos." + (det ? " (Detalle: " + det + ")" : ""));
+  }
+  if (!text.trim()) throw new Error("La IA no respondió nada. Intenta de nuevo.");
+  if (opts.json) { const a = text.indexOf("{"), b = text.lastIndexOf("}"); try { return JSON.parse(text.slice(a, b + 1)); } catch(e){ throw new Error("La IA respondió en un formato raro. Intenta de nuevo."); } }
+  return text.trim();
+}
+const pausaIA = () => esperar(S.ia && S.ia.proveedor === "gemini" ? 13000 : 2000); // respeta límites por minuto
+function contextoIA(){
+  const c = S.cfg;
+  return "NEGOCIO: " + c.nombre + "\nCIUDAD: " + c.ciudad + " (clientes locales)\nHORARIO: " + c.horario + "\nPRODUCTOS: " + Object.values(S.banco.productos).map(p => p.nombre).join(", ");
+}
+const REGLAS_FRASES = "Reglas:\n- Español de México, cálido y de barrio, con toques de Macuspana/Tabasco cuando venga al caso.\n- NO incluyas precios, descuentos, ubicación, WhatsApp ni hashtags (la app los agrega aparte).\n- NO uses engagement bait (\"comenta SÍ\", \"dale like si…\").\n- No inventes servicios (como entregas a domicilio) ni características que no sean de conocimiento común.\n- Puedes usar {nombre} para el nombre del negocio.\n- Frases distintas entre sí y concretas: cada una debe hablar claramente del producto.";
+function promptProductos(claves, n, mesTxt){
+  return "Eres la community manager de un negocio local. Escribe FRASES SUELTAS que una app combinará al azar para armar publicaciones de Facebook" + (mesTxt ? " durante " + mesTxt + " (piensa en clima, temporada, fechas y quincenas de ese mes)" : "") + ".\n\n" + contextoIA() + "\n\n" + REGLAS_FRASES +
+    "\n\nProductos (clave: nombre):\n" + claves.map(k => k + ": " + S.banco.productos[k].nombre).join("\n") +
+    "\n\nPara CADA producto escribe 3 \"ganchos\" (primera línea de la publicación: máximo 90 caracteres, empieza con un emoji, llama la atención y menciona el producto o su uso) y " + n + " \"frases\" (1 o 2 oraciones: usos, antojos, recetas sencillas, presentaciones, para quién es).\nResponde SOLO JSON así:\n{\"productos\":{\"clave\":{\"ganchos\":[\"...\"],\"frases\":[\"...\"]}}}";
+}
+async function frasesProductoIA(key, n = 6){
+  const r = await iaLlamar(promptProductos([key], n, ""), { json: true });
+  const P = r && r.productos && (r.productos[key] || Object.values(r.productos)[0]);
+  if (!P) throw new Error("La IA no devolvió frases. Intenta de nuevo.");
+  return await importarObjeto({ app: "espiga-frases", productos: { [key]: P } });
+}
+async function paqueteMesIA(mesVal, n){
+  const MESL = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+  const [y, m] = mesVal.split("-").map(Number), mesTxt = MESL[m-1] + " " + y;
+  const claves = Object.keys(S.banco.productos).filter(k => k !== "tienda"), grupos = [];
+  for (let i = 0; i < claves.length; i += 8) grupos.push(claves.slice(i, i + 8));
+  const total = grupos.length + 1, pack = { app: "espiga-frases", titulo: "Frases de " + mesTxt + " (IA)", productos: {}, ganchos: [], preguntas: [], fechas: [] };
+  let nuevas = 0;
+  for (let g = 0; g < grupos.length; g++) {
+    S.iaMsg = "Escribiendo frases de productos (" + (g + 1) + "/" + total + ")…"; render();
+    const r = await iaLlamar(promptProductos(grupos[g], n, mesTxt), { json: true });
+    const part = {}; for (const k of grupos[g]) if (r && r.productos && r.productos[k]) part[k] = r.productos[k];
+    nuevas += await importarObjeto({ app: "espiga-frases", productos: part }, true);
+    S.iaMsg = "Esperando un momento para no pasar el límite de la IA…"; render(); await pausaIA();
+  }
+  S.iaMsg = "Escribiendo frases generales y fechas del mes (" + total + "/" + total + ")…"; render();
+  const r2 = await iaLlamar("Eres la community manager de un negocio local. Escribe frases generales para Facebook durante " + mesTxt + ".\n\n" + contextoIA() + "\n\n" + REGLAS_FRASES +
+    "\n\nResponde SOLO JSON así:\n{\"ganchos\":[{\"m\":\"manana\",\"t\":\"...\"}],\"tienda\":[\"...\"],\"preguntas\":[\"...\"],\"fechas\":[{\"id\":\"id-corto\",\"nombre\":\"...\",\"desde\":\"MM-DD\",\"hasta\":\"MM-DD\",\"frases\":[\"...\"]}]}\n" +
+    "- ganchos: 12 primeras líneas para cualquier producto (máx. 90 caracteres, con emoji); m es \"manana\" (antes de 10 am), \"mediodia\" (10 a 14 h), \"tarde\" (después de 14 h) o \"*\" (cualquier hora); 3 de cada uno.\n- tienda: 5 frases sobre el negocio en general.\n- preguntas: 5 preguntas sinceras y fáciles de contestar.\n" +
+    "- fechas: fechas especiales de " + mesTxt + " en México, Tabasco y Macuspana útiles para una tortillería y tienda de abarrotes (incluye días previos en desde/hasta), con 2 o 3 frases cada una. Si no hay, arreglo vacío. No incluyas la quincena.", { json: true });
+  nuevas += await importarObjeto({ app: "espiga-frases", titulo: pack.titulo, ganchos: r2.ganchos || [], productos: (r2.tienda || []).length ? { tienda: { frases: r2.tienda } } : {}, preguntas: r2.preguntas || [], fechas: r2.fechas || [] }, true);
+  const hist = (await kvGet("paquetes")) || []; hist.push({ titulo: pack.titulo, fecha: new Date().toISOString(), nuevas }); await kvSet("paquetes", hist.slice(-30));
+  return nuevas;
+}
+async function textoIAPublicacion(p){
+  const f = fotoById(p.fotoId), pr = prodDe(f), c = S.cfg;
+  const prompt = "Eres la community manager de " + c.nombre + ", en " + c.ciudad + ". Escribe UNA publicación de Facebook lista para copiar y pegar, para publicarse el " + fechaBonita(p.fecha) + " a las " + p.hora + ".\n\n" + contextoIA() +
+    "\n\nLa foto adjunta es de: " + (f ? nombreFoto(f) : "la tienda") + ". Describe lo que se ve de forma antojable y concreta.\n\nReglas:\n- Español de México, cálido, de barrio. 3 a 7 líneas cortas, emojis con moderación.\n- La primera línea debe enganchar (es lo único que se ve antes de \"Ver más\").\n- Menciona el producto y Macuspana.\n- NO inventes precios, promociones ni servicios a domicilio. Sin engagement bait.\n- Termina con este bloque tal cual:\n📍 " + c.direccion + "\n📲 WhatsApp: " + c.whatsapp + "\n🕕 Abrimos " + c.horario + "\n\n" + c.hashtags + " " + ((pr && pr.tags) || "") +
+    "\n\nResponde SOLO el texto de la publicación, sin comillas ni explicaciones.";
+  return await iaLlamar(prompt, { images: f ? [f.blob] : [] });
+}
+
+/* ===================== Productos propios ===================== */
+const slug = t => String(t).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "").slice(0, 30) || "producto";
+function nuevoProducto(onListo){
+  const cats = Object.entries(S.banco.categorias).map(([k, v]) => '<option value="' + k + '">' + esc(v) + '</option>').join("");
+  const m = modal('<h3 style="margin-top:0">＋ Nuevo producto</h3><label>Nombre</label><input id="npNom" placeholder="Ej.: Aceite Nutrioli"><label>Categoría</label><select id="npCat">' + cats + '</select><label>Palabras para reconocerlo <span class="muted small">(separadas por coma)</span></label><input id="npCla" placeholder="Ej.: aceite, nutrioli"><label>Hashtags</label><input id="npTag" placeholder="Ej.: #Aceite #Nutrioli">' +
+    (iaLista() ? '<label style="display:flex;gap:8px;align-items:center;font-weight:600"><input type="checkbox" id="npIA" checked style="width:auto"> Escribir sus frases con IA (1 consulta)</label>' : '<p class="muted small">Después agrega sus frases en Frases → elige el producto. Mientras no tenga, usa las de su categoría.</p>') +
+    '<div class="row"><button class="btn borde" data-x="c">Cancelar</button><button class="btn verde" data-x="ok">Crear producto</button></div>');
+  m.querySelector('[data-x="c"]').onclick = () => { m.remove(); onListo && onListo(null); };
+  m.querySelector('[data-x="ok"]').onclick = async () => {
+    const nombre = m.querySelector("#npNom").value.trim(); if (!nombre) { toast("Escribe el nombre del producto"); return; }
+    let key = slug(nombre), i = 2; while (S.banco.productos[key]) key = slug(nombre) + "_" + i++;
+    const claves = m.querySelector("#npCla").value.split(",").map(x => x.trim()).filter(Boolean);
+    S.banco.productos[key] = { nombre, cat: m.querySelector("#npCat").value, claves: claves.length ? claves : [nombre.toLowerCase()], tags: m.querySelector("#npTag").value.trim(), ganchos: [], frases: [], propio: true };
+    await guardarBanco();
+    const conIA = m.querySelector("#npIA") && m.querySelector("#npIA").checked;
+    m.remove(); toast("✅ Producto creado");
+    onListo && onListo(key);
+    if (conIA) { toast("✨ La IA está escribiendo sus frases…", 4000); try { const n = await frasesProductoIA(key); toast("✅ " + n + " frases nuevas para " + nombre, 3500); } catch(e){ toast(e.message, 5000); } }
+    render();
+  };
+}
+
+/* ===================== Tareas de Facebook ===================== */
+const TIPOS_TAREA = { reel: "🎬 Reels", publicacion: "📝 Publicaciones", historia: "📱 Historias", otra: "✅ Otra tarea" };
+S.media = {};
+function lunesDe(d){ const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); const k = (x.getDay() + 6) % 7; x.setDate(x.getDate() - k); return ymd(x); }
+async function guardarTareas(){ await kvSet("tareas", S.tareas); }
+function progresoTarea(t){
+  if (t.tipo === "otra") return { hechas: t.hecha ? 1 : 0, total: 1 };
+  const ps = S.posts.filter(p => p.tareaId === t.id);
+  return { hechas: ps.filter(p => p.estado === "publicada").length, total: t.cantidad, preparadas: ps.length };
+}
+function vTareas(){
+  const sem = lunesDe(new Date()), lista = (S.tareas || []).filter(t => t.semana >= sem);
+  let h = '<div class="card"><h2>📋 Tareas de Facebook</h2><p class="muted small">Toma captura de las tareas semanales que te pide Facebook (Panel profesional o Meta Business Suite). ' + (iaLista() ? 'La IA las lee y la app te prepara todo: Reels con video, historias y publicaciones, ya programados en tu semana.' : 'Conecta una IA en <b>Más</b> para que lea la captura sola; mientras, agrégalas a mano.') + '</p>';
+  h += '<div class="row">' + (iaLista() ? '<button class="btn verde" id="btnTarCap" style="margin:0"' + (S.tarOcupada ? " disabled" : "") + '>' + (S.tarOcupada ? "⏳ " + esc(S.tarMsg || "Leyendo…") : "📷 Leer captura") + '</button>' : "") + '<button class="btn claro" id="btnTarMano" style="margin:0">＋ A mano</button></div>';
+  lista.forEach(t => {
+    const pr = progresoTarea(t), listo = pr.hechas >= pr.total;
+    h += '<div style="border-top:1px solid var(--linea);margin-top:12px;padding-top:10px"><div style="display:flex;justify-content:space-between;gap:8px"><b>' + esc(TIPOS_TAREA[t.tipo] || "") + (t.tipo !== "otra" ? " × " + t.cantidad : "") + '</b><span class="pill' + (listo ? " v" : "") + '">' + (listo ? "✔ Cumplida" : pr.hechas + " de " + pr.total) + '</span></div>';
+    h += '<div class="small">' + esc(t.titulo) + '</div>' + (t.explicacion ? '<div class="muted small">' + esc(t.explicacion) + '</div>' : "") + (t.consejo ? '<div class="small" style="margin-top:4px">💡 ' + esc(t.consejo) + '</div>' : "");
+    if (t.tipo === "otra") h += '<button class="btn ' + (t.hecha ? "borde" : "claro") + '" data-tar-hecha="' + t.id + '">' + (t.hecha ? "Marcar como pendiente" : "✔ Ya la hice") + '</button>';
+    else if (!pr.preparadas) h += '<button class="btn" data-tar-prep="' + t.id + '"' + (S.tarOcupada ? " disabled" : "") + '>✨ Preparar ' + t.cantidad + ' ' + (t.tipo === "reel" ? "Reels" : t.tipo === "historia" ? "historias" : "publicaciones") + '</button>';
+    else h += '<p class="muted small" style="margin:6px 0 0">Preparadas: ' + pr.preparadas + '. Las encuentras abajo en tu semana (y en Hoy a su hora).</p>';
+    h += '<button class="btn rojo" style="padding:6px;font-size:13px" data-tar-del="' + t.id + '">Quitar tarea</button></div>';
+  });
+  if (!lista.length) h += '<p class="muted small" style="margin-bottom:0">No hay tareas esta semana.</p>';
+  return h + '</div>';
+}
+function bindTareas(){
+  const q = id => document.getElementById(id);
+  q("btnTarCap") && (q("btnTarCap").onclick = () => q("tarIn").click());
+  q("btnTarMano").onclick = tareaAMano;
+  $app.querySelectorAll("[data-tar-prep]").forEach(b => b.onclick = () => prepararTarea(b.dataset.tarPrep));
+  $app.querySelectorAll("[data-tar-hecha]").forEach(b => b.onclick = async () => { const t = S.tareas.find(x => x.id === b.dataset.tarHecha); t.hecha = !t.hecha; await guardarTareas(); render(); });
+  $app.querySelectorAll("[data-tar-del]").forEach(b => b.onclick = async () => {
+    const id = b.dataset.tarDel, pend = S.posts.filter(p => p.tareaId === id && p.estado === "pendiente");
+    if (!await confirmar("¿Quitar esta tarea?" + (pend.length ? " También se borran sus " + pend.length + " publicaciones pendientes." : ""), "Quitar")) return;
+    S.posts = S.posts.filter(p => !(p.tareaId === id && p.estado === "pendiente")); S.tareas = S.tareas.filter(t => t.id !== id);
+    await guardarPosts(); await guardarTareas(); render();
+  });
+}
+function tareaAMano(){
+  const m = modal('<h3 style="margin-top:0">＋ Agregar tarea</h3><label>¿Qué pide Facebook?</label><select id="taTipo">' + Object.entries(TIPOS_TAREA).map(([k, v]) => '<option value="' + k + '">' + v + '</option>').join("") + '</select><label>¿Cuántas?</label><input id="taN" type="number" inputmode="numeric" min="1" max="21" value="5"><label>Texto de la tarea <span class="muted small">(como aparece en Facebook)</span></label><input id="taTxt" placeholder="Ej.: Publica 5 reels esta semana"><div class="row"><button class="btn borde" data-x="c">Cancelar</button><button class="btn verde" data-x="ok">Agregar</button></div>');
+  m.querySelector('[data-x="c"]').onclick = () => m.remove();
+  m.querySelector('[data-x="ok"]').onclick = async () => {
+    const tipo = m.querySelector("#taTipo").value, n = Math.min(21, Math.max(1, Number(m.querySelector("#taN").value) || 1));
+    S.tareas.push({ id: uid(), semana: lunesDe(new Date()), tipo, cantidad: tipo === "otra" ? 1 : n, titulo: m.querySelector("#taTxt").value.trim() || (TIPOS_TAREA[tipo] + " × " + n), explicacion: "", consejo: "" });
+    await guardarTareas(); m.remove(); render();
+  };
+}
+async function onTareasCaptura(ev){
+  const files = [...ev.target.files].slice(0, 3); ev.target.value = ""; if (!files.length) return;
+  S.tarOcupada = true; S.tarMsg = "La IA está leyendo tus tareas…"; render();
+  try {
+    const imgs = []; for (const f of files) imgs.push(await comprimir(f));
+    const r = await iaLlamar("Esta(s) captura(s) de pantalla son del Panel profesional o Meta Business Suite de la página de Facebook de " + S.cfg.nombre + " (tortillería y tienda de abarrotes en " + S.cfg.ciudad + "). Lee TODAS las tareas, metas o desafíos que aparecen (por ejemplo: publicar cierto número de reels, publicaciones o historias, responder mensajes, invitar amigos, completar información).\n" +
+      "Para cada una responde con:\n- tipo: \"reel\" (videos cortos o reels), \"publicacion\" (publicaciones con foto o texto), \"historia\" (historias) u \"otra\" (todo lo demás)\n- cantidad: número que pide (1 si no dice)\n- titulo: el texto de la tarea tal como aparece\n- explicacion: qué pide, en palabras sencillas\n- consejo: cómo cumplirla bien siendo una tortillería de barrio (1 frase)\n" +
+      "Si no ves tareas, devuelve el arreglo vacío. Responde SOLO JSON así:\n{\"tareas\":[{\"tipo\":\"reel\",\"cantidad\":5,\"titulo\":\"...\",\"explicacion\":\"...\",\"consejo\":\"...\"}]}", { images: imgs, json: true });
+    const nuevas = (r && r.tareas || []).filter(t => t && TIPOS_TAREA[t.tipo]).map(t => ({ id: uid(), semana: lunesDe(new Date()), tipo: t.tipo, cantidad: t.tipo === "otra" ? 1 : Math.min(21, Math.max(1, Number(t.cantidad) || 1)), titulo: String(t.titulo || "").slice(0, 200), explicacion: String(t.explicacion || "").slice(0, 300), consejo: String(t.consejo || "").slice(0, 300) }));
+    S.tareas.push(...nuevas); await guardarTareas();
+    toast(nuevas.length ? "✅ " + nuevas.length + " tareas encontradas" : "No encontré tareas en la captura. Intenta con otra o agrégalas a mano.", 4000);
+  } catch(e){ toast(e.message, 6000); }
+  S.tarOcupada = false; render();
+}
+function diasRepartidos(n){
+  const hoy = new Date(), quedan = 7 - ((hoy.getDay() + 6) % 7), base = Math.max(quedan, Math.min(7, n)), out = [];
+  for (let i = 0; i < n; i++) { const d = new Date(hoy); d.setDate(d.getDate() + Math.floor(i * base / n)); out.push(ymd(d)); }
+  return out;
+}
+function horaLibre(fecha, preferida){
+  const ocup = new Set(S.posts.filter(p => p.fecha === fecha && p.estado !== "omitida").map(p => p.hora));
+  let [h, m] = preferida.split(":").map(Number); const now = new Date();
+  for (let i = 0; i < 12; i++) {
+    const hm = pad(h) + ":" + pad(m), s = { fecha, hora: hm };
+    if (!ocup.has(hm) && dt(s) > now && h < 18) return hm;
+    m += 30; if (m >= 60) { m -= 60; h++; }
+  }
+  return null;
+}
+function fotosVariadas(n){
+  const res = [], usadasCat = new Set(), pool = S.fotos.slice().sort(() => Math.random() - 0.5);
+  for (const f of pool) if (res.length < n && !usadasCat.has(f.prod || f.categoria)) { res.push(f); usadasCat.add(f.prod || f.categoria); }
+  for (const f of pool) if (res.length < n && !res.includes(f)) res.push(f);
+  return res;
+}
+function pantallaDe(f){ const pr = prodDe(f); return rellenar(pr && pr.ganchos && pr.ganchos.length ? pick(pr.ganchos) : "🌽 " + nombreFoto(f), f); }
+function guionPlantilla(fotos){
+  const n = fotos.map(nombreFoto);
+  return "1. (3 s) Empieza con lo más llamativo: tortillas saliendo de la máquina, con vapor.\n2. (3 s) Muestra " + (n[0] || "tu producto") + " de cerca, con buena luz.\n" + (n[1] ? "3. (3 s) Pasa a " + n[1] + (n[2] ? " y " + n[2] : "") + ".\n" : "") + "4. (3 s) Cierra con la fachada o el mostrador y di: \"¡Te esperamos en " + S.cfg.nombre + "!\"\nTip: graba vertical, sin música con derechos (usa la del propio Facebook).";
+}
+async function prepararTarea(id){
+  const t = S.tareas.find(x => x.id === id); if (!t) return;
+  if (!S.fotos.length) { toast("Primero agrega fotos en la pestaña Fotos"); return; }
+  const fechas = diasRepartidos(t.cantidad), pref = t.tipo === "reel" ? "15:00" : t.tipo === "historia" ? "09:00" : (S.cfg.horarios[1] || S.cfg.horarios[0] || "12:00");
+  const items = [];
+  for (const fecha of fechas) {
+    let dia = fecha, hora = null;
+    for (let k = 0; k < 7 && !hora; k++) { if (k) { const d = parseYmd(fecha); d.setDate(d.getDate() + k); dia = ymd(d); } hora = horaLibre(dia, pref) || horaLibre(dia, "07:00"); }
+    if (!hora) continue;
+    const fotos = t.tipo === "reel" ? fotosVariadas(Math.min(4, Math.max(2, S.fotos.length))) : elegirFotos(1);
+    const p = { id: uid(), fecha: dia, hora, fotoId: fotos[0].id, estado: "pendiente", resultados: null, tareaId: t.id };
+    if (t.tipo === "reel") Object.assign(p, { formato: "reel", fotoIds: fotos.map(f => f.id), pantalla: fotos.map(pantallaDe), guion: guionPlantilla(fotos) });
+    if (t.tipo === "historia") Object.assign(p, { formato: "historia", pantalla: [pantallaDe(fotos[0])] });
+    p.texto = componer(dia, hora, fotos[0]);
+    items.push(p);
+  }
+  if (!items.length) { toast("No hay horarios libres esta semana"); return; }
+  if (iaLista() && t.tipo === "reel") {
+    S.tarOcupada = true; S.tarMsg = "La IA está escribiendo tus Reels…"; render();
+    try {
+      const r = await iaLlamar("Eres la community manager de " + S.cfg.nombre + " en " + S.cfg.ciudad + ". Prepara " + items.length + " Reels de Facebook (video vertical de 12 a 15 segundos hecho con fotos). Para cada uno te digo las fotos en orden.\n\n" +
+        items.map((p, i) => "Reel " + i + ": " + p.fotoIds.map(fid => nombreFoto(fotoById(fid))).join(" → ")).join("\n") +
+        "\n\nPara CADA Reel responde:\n- pantalla: un texto corto por foto (máx. 45 caracteres, con emoji) que se verá encima de esa foto; el primero debe enganchar en 2 segundos.\n- texto: la descripción para Facebook (2 a 4 líneas, menciona Macuspana, sin precios, sin engagement bait).\n- guion: por si el dueño prefiere grabarlo él: 3 a 5 tomas cortas con lo que se graba y lo que se dice.\n\nResponde SOLO JSON así:\n{\"reels\":[{\"pantalla\":[\"...\"],\"texto\":\"...\",\"guion\":\"1. ...\\n2. ...\"}]}", { json: true });
+      (r.reels || []).forEach((x, i) => { const p = items[i]; if (!p || !x) return;
+        if (Array.isArray(x.pantalla) && x.pantalla.length) p.pantalla = p.fotoIds.map((_, j) => String(x.pantalla[j] || x.pantalla[x.pantalla.length - 1]).slice(0, 60));
+        if (x.texto) p.texto = String(x.texto).trim() + "\n\n📍 " + S.cfg.direccion + "\n📲 WhatsApp: " + S.cfg.whatsapp + "\n\n" + S.cfg.hashtags + " #Reels";
+        if (x.guion) p.guion = String(x.guion); p.porIA = true; });
+    } catch(e){ toast("La IA no pudo escribirlos (" + e.message + "). Los preparé con tus frases.", 6000); }
+    S.tarOcupada = false;
+  }
+  S.posts.push(...items); S.posts.sort((a, b) => (a.fecha + a.hora).localeCompare(b.fecha + b.hora));
+  await guardarPosts(); await kvSet("usados", S.usados);
+  toast("✅ " + items.length + " listos y programados en tu semana", 4000); render();
+}
+
+/* ---------- Reel (video) e historia (imagen) ---------- */
+function envolver(g, texto, maxW){
+  const palabras = String(texto).split(/\s+/), lineas = []; let l = "";
+  for (const w of palabras) { const prueba = l ? l + " " + w : w; if (g.measureText(prueba).width > maxW && l) { lineas.push(l); l = w; } else l = prueba; }
+  if (l) lineas.push(l); return lineas;
+}
+function dibujarCover(g, im, W, H, zoom){
+  const k = Math.max(W / im.width, H / im.height) * zoom, w = im.width * k, h = im.height * k;
+  g.drawImage(im, (W - w) / 2, (H - h) / 2, w, h);
+}
+function textoGrande(g, texto, W, y, tam){
+  g.font = "800 " + tam + "px -apple-system, Helvetica, Arial, sans-serif"; g.textAlign = "center"; g.textBaseline = "middle";
+  const lin = envolver(g, texto, W - 120), alto = tam * 1.25, y0 = y - (lin.length - 1) * alto / 2;
+  const anchoMax = Math.max(...lin.map(x => g.measureText(x).width));
+  g.fillStyle = "rgba(0,0,0,.55)"; const pad = 28;
+  g.beginPath(); (g.roundRect ? g.roundRect((W - anchoMax) / 2 - pad, y0 - alto / 2 - pad / 2, anchoMax + pad * 2, alto * lin.length + pad, 26) : g.rect((W - anchoMax) / 2 - pad, y0 - alto / 2 - pad / 2, anchoMax + pad * 2, alto * lin.length + pad)); g.fill();
+  g.fillStyle = "#fff"; lin.forEach((x, i) => g.fillText(x, W / 2, y0 + i * alto));
+}
+function dibujarCierre(g, W, H){
+  const c = S.cfg; g.fillStyle = "#2F5D3A"; g.fillRect(0, 0, W, H);
+  g.fillStyle = "#F5C542"; g.font = "120px sans-serif"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText("🌽", W / 2, H * 0.27);
+  g.fillStyle = "#fff"; g.font = "800 58px -apple-system, Helvetica, Arial, sans-serif";
+  envolver(g, c.nombre, W - 100).forEach((l, i) => g.fillText(l, W / 2, H * 0.40 + i * 70));
+  g.font = "600 36px -apple-system, Helvetica, Arial, sans-serif"; g.fillStyle = "#FBF6EA";
+  const lin = [...envolver(g, "📍 " + c.direccion, W - 120), "", "📲 WhatsApp " + c.whatsapp, "🕕 Abrimos " + c.horario];
+  lin.forEach((l, i) => g.fillText(l, W / 2, H * 0.58 + i * 50));
+}
+async function crearVideoReel(p, onProg){
+  const fotos = (p.fotoIds || [p.fotoId]).map(fotoById).filter(Boolean);
+  if (!fotos.length) throw new Error("Este Reel ya no tiene fotos. Agrega fotos y prepáralo de nuevo.");
+  const tipos = ["video/mp4;codecs=avc1", "video/mp4", "video/webm;codecs=vp9", "video/webm;codecs=vp8", "video/webm"];
+  const mime = window.MediaRecorder && tipos.find(m => MediaRecorder.isTypeSupported(m));
+  const W = 720, H = 1280, c = document.createElement("canvas"); c.width = W; c.height = H;
+  if (!mime || !c.captureStream) throw new Error("Este navegador no puede crear videos. Actualiza tu iPhone o usa Safari.");
+  const g = c.getContext("2d"), imgs = [];
+  for (const f of fotos) imgs.push(await createImageBitmap(f.blob));
+  const textos = p.pantalla || [], DUR = 3200, CIERRE = 2800, FADE = 400, total = imgs.length * DUR + CIERRE;
+  const dibujar = t => {
+    const i = Math.floor(t / DUR);
+    if (i < imgs.length) {
+      const local = t - i * DUR;
+      g.fillStyle = "#000"; g.fillRect(0, 0, W, H);
+      if (i > 0 && local < FADE) { g.globalAlpha = 1; dibujarCover(g, imgs[i - 1], W, H, 1.08); g.globalAlpha = local / FADE; }
+      dibujarCover(g, imgs[i], W, H, 1 + 0.08 * (local / DUR)); g.globalAlpha = 1;
+      const grad = g.createLinearGradient(0, H * 0.55, 0, H); grad.addColorStop(0, "rgba(0,0,0,0)"); grad.addColorStop(1, "rgba(0,0,0,.55)"); g.fillStyle = grad; g.fillRect(0, H * 0.55, W, H * 0.45);
+      g.font = "700 30px -apple-system, Helvetica, Arial, sans-serif"; g.textAlign = "left"; g.textBaseline = "top"; g.fillStyle = "rgba(0,0,0,.45)"; g.fillRect(30, 40, g.measureText("🌽 " + S.cfg.nombre).width + 30, 50); g.fillStyle = "#fff"; g.fillText("🌽 " + S.cfg.nombre, 45, 50);
+      if (textos[i] && local > 250) textoGrande(g, textos[i], W, H * 0.72, 54);
+    } else {
+      const local = t - imgs.length * DUR; dibujarCierre(g, W, H);
+      if (local < FADE) { g.globalAlpha = 1 - local / FADE; dibujarCover(g, imgs[imgs.length - 1], W, H, 1.08); g.globalAlpha = 1; }
+    }
+  };
+  dibujar(0);
+  const stream = c.captureStream(30), rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 4000000 }), chunks = [];
+  rec.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
+  const fin = new Promise(r => rec.onstop = r);
+  rec.start(250); const t0 = performance.now();
+  await new Promise(res => { const frame = () => { const t = performance.now() - t0; dibujar(Math.min(t, total)); onProg && onProg(Math.min(1, t / total)); if (t < total) requestAnimationFrame(frame); else res(); }; requestAnimationFrame(frame); });
+  rec.stop(); await fin; stream.getTracks().forEach(tr => tr.stop());
+  const blob = new Blob(chunks, { type: mime.split(";")[0] });
+  if (!blob.size) throw new Error("No se pudo grabar el video. Intenta de nuevo sin salir de la app.");
+  return blob;
+}
+async function crearImagenHistoria(p){
+  const f = fotoById(p.fotoId); if (!f) throw new Error("Esta historia ya no tiene foto.");
+  const W = 1080, H = 1920, c = document.createElement("canvas"); c.width = W; c.height = H; const g = c.getContext("2d");
+  dibujarCover(g, await createImageBitmap(f.blob), W, H, 1);
+  const grad = g.createLinearGradient(0, H * 0.5, 0, H); grad.addColorStop(0, "rgba(0,0,0,0)"); grad.addColorStop(1, "rgba(0,0,0,.6)"); g.fillStyle = grad; g.fillRect(0, H * 0.5, W, H * 0.5);
+  textoGrande(g, (p.pantalla && p.pantalla[0]) || nombreFoto(f), W, H * 0.68, 78);
+  g.font = "700 44px -apple-system, Helvetica, Arial, sans-serif"; g.textAlign = "center"; g.fillStyle = "#fff";
+  g.fillText("🌽 " + S.cfg.nombre, W / 2, H * 0.86); g.fillText("📲 " + S.cfg.whatsapp, W / 2, H * 0.90);
+  return await new Promise(r => c.toBlob(r, "image/jpeg", 0.9));
+}
+async function compartirMedia(m, formato){
+  if (!m || !m.blob) return;
+  const ext = m.tipo === "video" ? (m.blob.type.includes("mp4") ? "mp4" : "webm") : "jpg", nombre = (formato === "reel" ? "reel-espiga." : "historia-espiga.") + ext;
+  const file = new File([m.blob], nombre, { type: m.blob.type });
+  if (navigator.canShare && navigator.canShare({ files: [file] })) { try { await navigator.share({ files: [file] }); } catch(e){ if (e.name !== "AbortError") toast("No se pudo compartir"); } }
+  else { descargar(nombre, m.blob); toast("Archivo descargado"); }
+}
+function tarjetaEspecial(p, destacada){
+  const reel = p.formato === "reel", fotos = (p.fotoIds || [p.fotoId]).map(fotoById).filter(Boolean), m = S.media[p.id], ed = S.editing === p.id;
+  let h = '<div class="card" data-pid="' + p.id + '">';
+  h += destacada ? '<div class="big">¡Ahora toca ' + (reel ? "tu Reel" : "tu historia") + '!</div><p class="muted" style="margin-top:4px">' + esc(fechaBonita(p.fecha)) + ' · ' + esc(p.hora) + '</p>' : '<h2>' + (reel ? "🎬 Reel" : "📱 Historia") + ' · ' + esc(fechaBonita(p.fecha)) + ' · ' + esc(p.hora) + '</h2>';
+  h += '<p style="margin:6px 0">' + estadoPill(p) + pillClase(p) + (p.tareaId ? '<span class="pill">📋 Tarea de Facebook</span>' : "") + (p.porIA ? '<span class="pill v">✨ IA</span>' : "") + '</p>';
+  if (m && m.url) h += m.tipo === "video" ? '<video src="' + m.url + '" controls playsinline loop style="width:100%;max-height:70vh;border-radius:12px;background:#000"></video>' : '<img src="' + m.url + '" style="width:100%;border-radius:12px">';
+  else if (m && m.cargando) h += '<div class="aviso">🎬 Creando tu video… <b data-prog="' + p.id + '">' + Math.round((m.prog || 0) * 100) + '%</b><br><span class="small">Tarda unos 15 segundos. No cambies de app ni bloquees el celular.</span></div>';
+  else h += '<div class="grid" style="grid-template-columns:repeat(' + Math.min(4, fotos.length || 1) + ',1fr)">' + fotos.map((f, i) => '<div class="it"><img src="' + urlFoto(f) + '" alt=""><div class="lab">' + esc((p.pantalla || [])[i] || "") + '</div></div>').join("") + '</div>';
+  if (ed) h += '<label>Edita la descripción</label><textarea id="edTxt" style="min-height:200px">' + esc(p.texto) + '</textarea><div class="row"><button class="btn borde" data-act="cancelEd">Cancelar</button><button class="btn verde" data-act="saveEd">Guardar</button></div>';
+  else h += '<div class="aviso small" style="margin-top:10px;white-space:pre-wrap"><b>Descripción para Facebook:</b>\n' + esc(p.texto) + '</div>';
+  if (p.fbEstado === "programada" && p.estado === "pendiente" && !ed) h += fbBox(p);
+  else if (p.estado === "pendiente" && !ed) {
+    h += fbBotonUno(p);
+    if (reel) h += m && m.url ? '<div class="paso"><b class="num">1</b><button class="btn claro" data-act="compMedia">Compartir / guardar video</button></div>' : '<div class="paso"><b class="num">1</b><button class="btn" data-act="video"' + (m && m.cargando ? " disabled" : "") + '>🎬 Crear video del Reel</button></div>';
+    else h += m && m.url ? '<div class="paso"><b class="num">1</b><button class="btn claro" data-act="compMedia">Compartir / guardar imagen</button></div>' : '<div class="paso"><b class="num">1</b><button class="btn" data-act="histImg">🖼️ Crear imagen de la historia</button></div>';
+    h += '<div class="paso"><b class="num">2</b><button class="btn verde" data-act="copiar">Copiar descripción</button></div>';
+    h += '<div class="paso"><b class="num">3</b><a class="btn" href="https://www.facebook.com/" target="_blank" rel="noopener">Abrir Facebook</a></div>';
+    h += '<p class="muted small">En Facebook: ' + (reel ? "Crear → Reel → elige el video → agrega música de Facebook si quieres → pega la descripción." : "Crear historia → elige la imagen.") + '</p>';
+    if (reel && p.guion) h += '<details style="margin-top:8px"><summary class="small" style="font-weight:700;cursor:pointer">🎥 ¿Prefieres grabarlo tú? Ver guion</summary><div class="small" style="white-space:pre-wrap;margin-top:6px">' + esc(p.guion) + '</div></details>';
+    h += '<button class="btn verde" data-act="hecha">✔ Ya lo publiqué</button><div class="row"><button class="btn borde" data-act="editar">✏️ Editar</button><button class="btn rojo" data-act="omitir">Omitir</button></div>';
+  }
+  if (p.estado === "publicada") {
+    const r = p.resultados || {};
+    h += '<div style="margin-top:12px"><h3>📊 ¿Cómo le fue?</h3><div class="metric">';
+    [["alcance","Alcance"],["reacciones","Reacc."],["comentarios","Coment."],["compartidos","Compart."],["mensajes","Mensajes"]].forEach(([k,l]) => h += '<div><input type="number" inputmode="numeric" min="0" data-met="' + k + '" value="' + (r[k] ?? "") + '"><span>' + l + '</span></div>');
+    h += '</div><button class="btn claro" data-act="res">Guardar resultados</button>' + (iaLista() ? '<button class="btn borde" data-act="capRes">📷 Leer de una captura</button>' : '') + '</div>';
+  }
+  if (p.estado !== "pendiente") h += '<button class="btn borde" data-act="reabrir">Regresar a pendiente</button>';
+  return h + '</div>';
+}
+
+/* ===================== Ajuste automático de horarios ===================== */
+const HORAS_PRUEBA = ["06:30","07:00","07:30","08:00","09:00","10:00","11:00","11:30","12:00","12:30","13:00","14:00","15:00","16:00","16:30","17:00","17:30"];
+const minutos = h => { const [a, b] = h.split(":").map(Number); return a * 60 + b; };
+function statsHoras(){
+  const g = {};
+  S.posts.filter(p => p.estado === "publicada" && p.resultados && p.resultados.alcance != null && parseYmd(p.fecha).getDay() !== 0)
+    .forEach(p => { g[p.hora] = g[p.hora] || { n: 0, a: 0 }; g[p.hora].n++; g[p.hora].a += p.resultados.alcance || 0; });
+  Object.values(g).forEach(v => v.prom = v.a / v.n);
+  return g;
+}
+async function ajustarHorarios(){
+  if (S.cfg.autoHorarios === false) return null;
+  const st = statsHoras(), total = Object.values(st).reduce((a, v) => a + v.n, 0);
+  if (total < 10) return null;
+  const N = Math.max(1, S.cfg.horarios.length);
+  const probadas = Object.entries(st).filter(([, v]) => v.n >= 2).sort((a, b) => b[1].prom - a[1].prom).map(([h]) => h);
+  const quedan = probadas.slice(0, Math.max(1, N - 1));
+  for (const h of S.cfg.horarios) if (quedan.length < Math.max(1, N - 1) && !quedan.includes(h)) quedan.push(h);
+  let nuevo = quedan.slice();
+  if (N > 1) {
+    const libres = HORAS_PRUEBA.filter(h => !nuevo.includes(h) && !(st[h] && st[h].n >= 2) && nuevo.every(x => Math.abs(minutos(x) - minutos(h)) >= 60));
+    nuevo.push(libres.length ? pick(libres) : probadas.find(h => !nuevo.includes(h)) || S.cfg.horarios.find(h => !nuevo.includes(h)));
+  }
+  nuevo = [...new Set(nuevo.filter(Boolean))].sort();
+  if (nuevo.join() === S.cfg.horarios.join()) return null;
+  const cambio = { fecha: new Date().toISOString(), antes: S.cfg.horarios.slice(), despues: nuevo, mejor: probadas[0] || "" };
+  S.cfg.horarios = nuevo; await guardarCfg();
+  const log = (await kvGet("ajustes")) || []; log.push(cambio); await kvSet("ajustes", log.slice(-20)); S.ajustes = log.slice(-20);
+  return cambio;
+}
+
+/* ===================== Paquetes de frases (hechos con Claude) ===================== */
+function abrirImportar(){
+  const m = modal('<h3 style="margin-top:0">📥 Importar paquete de frases</h3><p class="muted small">Los paquetes se generan con la IA en la app de Claude (Ideas → Paquete de frases) o pidiéndoselos a Claude en el chat. Las frases nuevas se <b>agregan</b> a las que ya tienes; las repetidas se ignoran.</p><button class="btn verde" data-x="file">Elegir archivo del paquete</button><label>…o pega aquí el texto del paquete</label><textarea id="pkgTxt" placeholder=\'{"app":"espiga-frases", ...}\'></textarea><button class="btn claro" data-x="paste">Importar texto pegado</button><button class="btn borde" data-x="c">Cerrar</button>');
+  m.querySelector('[data-x="c"]').onclick = () => m.remove();
+  m.querySelector('[data-x="file"]').onclick = () => { m.remove(); document.getElementById("pkgIn").click(); };
+  m.querySelector('[data-x="paste"]').onclick = () => { const t = m.querySelector("#pkgTxt").value; m.remove(); importarTexto(t); };
+}
+async function onPkgFile(ev){ const f = ev.target.files[0]; ev.target.value = ""; if (f) importarTexto(await f.text()); }
+async function importarTexto(txt){
+  let d; try { const a = txt.indexOf("{"), b = txt.lastIndexOf("}"); d = JSON.parse(txt.slice(a, b + 1)); } catch(e){ toast("Ese texto no es un paquete válido", 3500); return; }
+  if (!d || d.app !== "espiga-frases") { toast("Ese archivo no es un paquete de frases de Espiga Social", 3500); return; }
+  const n = await importarObjeto(d);
+  const hist = (await kvGet("paquetes")) || []; hist.push({ titulo: d.titulo || "", fecha: new Date().toISOString(), nuevas: n }); await kvSet("paquetes", hist.slice(-30));
+  toast("✅ Paquete " + (d.titulo ? "\"" + d.titulo + "\" " : "") + "importado: " + n + " frases nuevas", 4000);
+  render();
+}
+async function importarObjeto(d){
+  const B = S.banco; let n = 0;
+  const limpio = t => typeof t === "string" ? t.trim().slice(0, 600) : "";
+  const agregar = (lista, t) => { t = limpio(t); if (t && !lista.includes(t)) { lista.push(t); n++; } };
+  (d.ganchos || []).forEach(g => { const t = limpio(g && g.t), m = ["manana","mediodia","tarde","*"].includes(g && g.m) ? g.m : "*"; if (t && !B.ganchos.some(x => x.t === t)) { B.ganchos.push({ m, t }); n++; } });
+  Object.entries(d.productos || {}).forEach(([k, p]) => {
+    let pr = B.productos[k];
+    if (!pr) { if (!p || !p.nombre || !B.categorias[p.cat]) return; pr = B.productos[k] = { nombre: limpio(p.nombre), cat: p.cat, claves: (p.claves || []).map(limpio).filter(Boolean), tags: limpio(p.tags), ganchos: [], frases: [] }; }
+    (p.ganchos || []).forEach(t => agregar(pr.ganchos = pr.ganchos || [], t));
+    (p.frases || []).forEach(t => agregar(pr.frases = pr.frases || [], t));
+  });
+  (d.generales || []).forEach(t => agregar(B.cuerpos.general, t));
+  (d.preguntas || []).forEach(t => agregar(B.preguntas, t));
+  (d.cierres || []).forEach(t => agregar(B.cierres, t));
+  (d.fechas || []).forEach(f => {
+    if (!f || !Array.isArray(f.frases)) return;
+    let x = B.fechas.find(y => y.id === f.id) || B.fechas.find(y => y.nombre === f.nombre);
+    const okMD = v => /^\d{2}-\d{2}$/.test(v || "");
+    if (!x) { if (!okMD(f.desde) || !okMD(f.hasta)) return; x = { id: limpio(f.id) || uid(), nombre: limpio(f.nombre) || "Fecha especial", desde: f.desde, hasta: f.hasta, frases: [] }; B.fechas.push(x); }
+    f.frases.forEach(t => agregar(x.frases, t));
+  });
+  await guardarBanco();
+  return n;
+}
+
+/* ===================== Respaldo ===================== */
+const blobADataURL = b => new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(b); });
+async function respaldo(){
+  toast("Preparando respaldo…");
+  const fotos = []; for (const f of S.fotos) fotos.push({ id: f.id, categoria: f.categoria, prod: f.prod || "", producto: f.producto, creada: f.creada, data: await blobADataURL(f.blob) });
+  const json = JSON.stringify({ app: "espiga-social", version: 1, fecha: new Date().toISOString(), cfg: S.cfg, banco: S.banco, posts: S.posts, tareas: S.tareas, mkt: S.mkt, caja: S.caja, hechos: S.hechos, fotos });
+  descargar("respaldo-espiga-" + hoyStr() + ".json", new Blob([json], { type: "application/json" }));
+}
+async function restaurar(ev){
+  const file = ev.target.files[0]; ev.target.value = ""; if (!file) return;
+  let d; try { d = JSON.parse(await file.text()); } catch(e){ toast("Ese archivo no es un respaldo válido"); return; }
+  if (!d || d.app !== "espiga-social") { toast("Ese archivo no es un respaldo de Espiga Social"); return; }
+  if (!await confirmar("Esto reemplaza lo que hay en la app por el respaldo del " + (d.fecha || "").slice(0, 10) + ". ¿Continuar?", "Restaurar")) return;
+  await tx("fotos", "readwrite", s => s.clear());
+  const fotos = [];
+  for (const f of d.fotos || []) { const blob = await (await fetch(f.data)).blob(); const x = { id: f.id, categoria: f.categoria, prod: f.prod || "", producto: f.producto, creada: f.creada, blob }; await fotoPut(x); fotos.push(x); }
+  S.cfg = Object.assign(clone(DEFAULT_CFG), d.cfg || {}); S.banco = d.banco || clone(BANCO_INICIAL); if (S.banco.version !== BANCO_INICIAL.version) { S.banco.productos = clone(BANCO_INICIAL.productos); S.banco.version = BANCO_INICIAL.version; } S.posts = d.posts || []; S.tareas = d.tareas || []; await kvSet("tareas", S.tareas); S.mkt = Object.assign(clone(MKT_DEF), d.mkt || {}); S.caja = d.caja || {}; S.hechos = d.hechos || {}; await kvSet("mkt", S.mkt); await kvSet("caja", S.caja); await kvSet("hechos", S.hechos);
+  Object.values(S.urls).forEach(u => URL.revokeObjectURL(u)); S.urls = {}; S.fotos = fotos.sort((a,b) => (b.creada||"").localeCompare(a.creada||""));
+  await guardarCfg(); await guardarBanco(); await guardarPosts(); toast("✅ Respaldo restaurado"); render();
+}
+
+/* ===================== Inicio ===================== */
+async function init(){
+  try { IDB = await abrirDB(); }
+  catch(e){ $app.innerHTML = '<div class="aviso">Este navegador no permite guardar datos (¿modo privado?). Abre la app en Safari normal.</div>'; return; }
+  S.cfg = Object.assign(clone(DEFAULT_CFG), (await kvGet("cfg")) || {});
+  S.banco = (await kvGet("banco")) || clone(BANCO_INICIAL);
+  if (S.banco.version !== BANCO_INICIAL.version) { S.banco.productos = clone(BANCO_INICIAL.productos); S.banco.version = BANCO_INICIAL.version; await guardarBanco(); }
+  S.posts = (await kvGet("posts")) || [];
+  S.usados = (await kvGet("usados")) || [];
+  S.ia = (await kvGet("ia")) || null;
+  S.ajustes = (await kvGet("ajustes")) || [];
+  S.tareas = (await kvGet("tareas")) || [];
+  S.mkt = Object.assign(clone(MKT_DEF), (await kvGet("mkt")) || {}); S.caja = (await kvGet("caja")) || {}; S.hechos = (await kvGet("hechos")) || {};
+  await evaluarImpulsos();
+  setTimeout(() => renovarSiToca().catch(() => {}), 5000);
+  S.fotos = ((await fotosAll()) || []).sort((a,b) => (b.creada||"").localeCompare(a.creada||""));
+  for (const f of S.fotos) if (f.prod === undefined) { f.prod = adivinarProd(f.producto, f.categoria); const p = prodDe(f); if (p) f.categoria = p.cat; await fotoPut(f); }
+  if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+  S.fb = (await kvGet("fb")) || null; S.fbUltima = (await kvGet("fbUltima")) || 0;
+  await fbActualizarEstados();
+  if (S.fb && Date.now() - S.fbUltima > 6 * 3600000) setTimeout(() => fbTraerResultados(true).catch(() => {}), 3000);
+  window.addEventListener("hashchange", render);
+  document.getElementById("fileIn").addEventListener("change", onFiles);
+  document.getElementById("restIn").addEventListener("change", restaurar);
+  document.getElementById("pkgIn").addEventListener("change", onPkgFile);
+  document.getElementById("tarIn").addEventListener("change", onTareasCaptura);
+  setInterval(async () => { const cambio = await fbActualizarEstados(); const ae = document.activeElement; if ((cambio || vista() === "hoy") && !document.querySelector(".modal") && !S.editing && !(ae && /INPUT|TEXTAREA|SELECT/.test(ae.tagName))) render(); }, 60000);
+  render();
+  if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});
+}
+init();
+</script>
+</body>
+</html>
