@@ -211,8 +211,12 @@ function proximoFestivo(){
 function agendaHoy(){
   const hoy = hoyStr(), d = new Date(), dow = d.getDay(), it = [];
   const deHoy = S.posts.filter(p => p.fecha === hoy && p.estado !== "omitida"), pend = deHoy.filter(p => p.estado === "pendiente" && p.fbEstado !== "programada"), solas = deHoy.filter(p => p.fbEstado === "programada").length;
-  if (deHoy.length) it.push({ id: "fb", ico: "📘", t: "Publicaciones de Facebook", s: pend.length ? pend.length + " por subir" + (solas ? " · " + solas + " se publican solas" : "") : (solas ? "Facebook las publica solo ✅" : "Todas listas ✅"), auto: !pend.length, btn: pend.length ? ["Ver", "verPub"] : null });
-  else it.push({ id: "plan", ico: "🗓️", t: "Arma tu semana", s: "Hoy no hay publicaciones programadas", btn: ["Armar", "#plan"] });
+  if (S.mkt.diasGrupos.includes(dow)) it.push({ id: "grupos", ico: "👥", t: "Comparte en grupos de Macuspana", s: S.mkt.grupos.length ? "Mejor hora: 1 a 2 pm o 7 a 8 pm · hasta 3 grupos, texto distinto en cada uno" : "Primero agrega tus grupos", btn: ["Preparar", "grupos"] });
+  if (impulsosPendientes().length) it.push({ id: "impulso", ico: "💰", t: "Una publicación está funcionando muy bien", s: "El robot sugiere impulsarla con poco dinero (abajo)", btn: null });
+  if (dow === 3) it.push({ id: "video", ico: "🎥", t: "Graba un video real corto", s: "Mándalo a la carpeta videos/ y el robot lo usa como Reel", btn: ["Ideas", "video"] });
+  const fest0 = proximoFestivo();
+  if (fest0 && fest0[0] <= sumaDias(hoy, 3)) it.push({ id: "festivo-" + fest0[0], ico: "🗓️", t: "Revisa tu horario para " + fest0[1], s: "En Facebook (" + fechaBonita(fest0[0]) + ")", btn: null });
+  return it;
   it.push({ id: "estado1", ico: "🟢", t: "Estado de WhatsApp + historia (mañana)", s: "Ideal a las 7:00 · \"ya hay tortilla caliente\"", btn: ["Preparar", "estado1"] });
   it.push({ id: "estado2", ico: "🟢", t: "Estado de WhatsApp + historia (mediodía)", s: "Ideal a las 12:00 · producto o promo", btn: ["Preparar", "estado2"] });
   const extraQ = esQuincena(hoy) && (d.getDate() === 15 || d.getDate() === ultimoDiaMes(hoy));
@@ -353,18 +357,17 @@ function abrirIdeaVideo(){
 /* ===================== Vista y eventos de Hoy ===================== */
 function vHoyNuevo(){
   let h = "";
-  if (!S.fotos.length) h += '<div class="aviso">👋 ¡Bienvenido! Empieza en <b>Más → Fotos</b> agregando fotos de tus productos. Luego ve a <b>Plan</b> y toca "Armar mi semana".</div>';
-  if (S.renovando) h += '<div class="aviso">✨ Renovando tus frases de este mes con IA… ' + esc(S.iaMsg || "") + '<br><span class="small">Puedes seguir usando la app.</span></div>';
-  h += vAgenda();
-  h += '<div id="pubHoy"></div>' + vHoy().replace(/<div class="aviso">👋[\s\S]*?<\/div>/, "");
-  h += vCajaMini();
+  if (!S.fotos.length) h += '<div class="aviso">👋 ¡Bienvenido! Agrega fotos en <b>Más → Fotos</b> y luego envíalas al robot en <b>Más → Conexiones</b>.</div>';
+  else if (S.fotos.some(f => !((S.gh || {}).subidas || {})[f.id])) h += '<div class="aviso">📤 Tienes fotos nuevas que el robot todavía no tiene. Envíalas en <b>Más → Conexiones</b>.</div>';
+  if (S.renovando) h += '<div class="aviso">✨ Renovando tus frases de este mes con IA… ' + esc(S.iaMsg || "") + '<br><span class="small">Cuando termine, envíalas al robot en Más → Conexiones.</span></div>';
+  h += vRobot() + vImpulsos();
+  const ag = agendaHoy(); if (ag.length) h += vAgenda();
   return h;
 }
 function bindHoyNuevo(){
   const acciones = { verPub: () => document.getElementById("pubHoy").scrollIntoView({ behavior: "smooth" }), estado1: () => abrirEstado(1), estado2: () => abrirEstado(2), difusion: abrirDifusion, google: abrirGoogle, grupos: abrirGrupos, video: abrirIdeaVideo };
   $app.querySelectorAll("[data-go]").forEach(b => b.onclick = () => { const g = b.dataset.go; if (g.startsWith("#")) location.hash = g; else if (acciones[g]) acciones[g](); });
   $app.querySelectorAll("[data-chk]").forEach(b => b.onclick = async () => { const id = b.dataset.chk; await marcarHecho(id, !hecho(id)); render(); });
-  bindCaja();
 }
 function bindCaja(){
   $app.querySelectorAll("[data-caja]").forEach(b => b.onclick = () => sumarCaja(b.dataset.caja, 1));

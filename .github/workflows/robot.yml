@@ -1,0 +1,57 @@
+name: Robot Espiga Social
+
+on:
+  schedule:
+    - cron: "47 11 * * *"   # 5:47 am en Macuspana: planea el día, programa publicaciones y Reels, historia de la mañana
+    - cron: "13 23 * * *"   # 5:13 pm en Macuspana: historia de la tarde y resultados
+  workflow_dispatch:
+    inputs:
+      modo:
+        description: "Qué corrida hacer"
+        type: choice
+        options: [manana, tarde]
+        default: manana
+      forzar:
+        description: "Repetir aunque ya se haya hecho hoy"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: robot-espiga
+  cancel-in-progress: false
+
+jobs:
+  robot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Preparar ffmpeg
+        run: command -v ffmpeg || (sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg fonts-dejavu-core)
+
+      - name: Correr el robot
+        env:
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          MODO: ${{ inputs.modo }}
+          FORZAR: ${{ inputs.forzar }}
+        run: node automatico/robot.mjs
+
+      - name: Guardar memoria del robot
+        if: always()
+        run: |
+          git config user.name "Robot Espiga"
+          git config user.email "robot-espiga@users.noreply.github.com"
+          git add datos
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -q -m "Robot: $(TZ=America/Mexico_City date '+%Y-%m-%d %H:%M')"
+          for i in 1 2 3; do git pull -q --rebase && git push -q && exit 0; sleep 5; done
+          exit 1

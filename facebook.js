@@ -186,8 +186,8 @@ function vFacebookMas(){
   let h = '<div class="card"><h2>📘 Conectar Facebook</h2>';
   if (S.fb) {
     h += '<p class="small">✅ Conectado a <b>' + esc(S.fb.pageName) + '</b> desde el ' + esc(fechaBonita(S.fb.conectado.slice(0, 10))) + '.</p>';
-    h += '<p class="muted small">Últimos resultados: ' + (S.fbUltima ? esc(new Date(S.fbUltima).toLocaleString("es-MX", { dateStyle: "medium", timeStyle: "short" })) : "aún no") + '. La app los trae sola cada 6 horas al abrirla.</p>';
-    h += '<button class="btn claro" id="btnFbRes"' + (S.fbLeyendo ? " disabled" : "") + '>' + (S.fbLeyendo ? "Leyendo…" : "🔄 Traer resultados de Facebook ahora") + '</button>';
+    h += '<p class="muted small">Últimos resultados: ' + (S.fbUltima ? esc(new Date(S.fbUltima).toLocaleString("es-MX", { dateStyle: "medium", timeStyle: "short" })) : "aún no") + '. El robot los revisa solo dos veces al día.</p>';
+    h += '<div class="aviso small"><b>Clave de Facebook para el robot</b> (una vez, o cuando el robot diga que venció):<br>1. Toca el botón de abajo para copiarla.<br>2. En GitHub, abre tu repositorio → <b>Settings → Secrets and variables → Actions → New repository secret</b> (o edita el que ya existe).<br>3. Nombre: <b>FB_PAGE_TOKEN</b>, pega la clave y guarda.</div><button class="btn verde" id="btnFbCopiar">📋 Copiar clave para el robot</button>';
     h += '<button class="btn rojo" id="btnFbQuitar">Desconectar Facebook</button>';
   } else {
     h += '<p class="muted small">Con tu página conectada, la app programa tus publicaciones y Reels directo en Facebook (se publican solas) y trae los resultados sin que los escribas. El token se guarda <b>solo en este celular</b> y no va en los respaldos.</p>';
