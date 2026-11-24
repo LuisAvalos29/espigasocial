@@ -100,8 +100,7 @@ label{display:block;font-weight:700;font-size:14px;margin:10px 0 4px}
 <main id="app"><div class="card muted">Cargando…</div></main>
 <nav>
   <a href="#hoy" data-v="hoy"><span class="ic">✅</span>Hoy</a>
-  <a href="#plan" data-v="plan"><span class="ic">🗓️</span>Plan</a>
-  <a href="#canales" data-v="canales"><span class="ic">📣</span>Canales</a>
+  <a href="#canales" data-v="canales"><span class="ic">👥</span>Grupos</a>
   <a href="#resultados" data-v="resultados"><span class="ic">📊</span>Resultados</a>
   <a href="#mas" data-v="mas"><span class="ic">⚙️</span>Más</a>
 </nav>
@@ -112,6 +111,7 @@ label{display:block;font-weight:700;font-size:14px;margin:10px 0 4px}
 <script src="banco.js"></script>
 <script src="facebook.js"></script>
 <script src="marketing.js"></script>
+<script src="robot-app.js"></script>
 <script>
 "use strict";
 /* ===================== Datos por defecto ===================== */
@@ -386,7 +386,7 @@ async function compartirFoto(p){
 }
 
 /* ===================== Vistas ===================== */
-const RUTAS = { hoy: [], plan: [], canales: SUB_CANALES, resultados: [["resumen", "📈 Resumen"], ["captura", "📷 Leer captura"], ["caja", "🧾 Caja"]], mas: [["negocio", "🏪 Negocio"], ["fotos", "📷 Fotos"], ["frases", "✍️ Frases"], ["conexiones", "🔌 Conexiones"], ["respaldo", "💾 Respaldo y guía"]] };
+const RUTAS = { hoy: [], plan: [], canales: [["grupos", "👥 Grupos"], ["promos", "🏷️ Promos"]], resultados: [], mas: [["negocio", "🏪 Negocio"], ["fotos", "📷 Fotos"], ["frases", "✍️ Frases"], ["conexiones", "🔌 Conexiones"], ["respaldo", "💾 Respaldo y guía"]] };
 function ruta(){
   let h = (location.hash || "#hoy").slice(1);
   const alias = { semana: "plan", fotos: "mas-fotos", frases: "mas-frases" }; if (alias[h]) h = alias[h];
@@ -403,14 +403,17 @@ function render(){
   if (main === "hoy") h += vHoyNuevo();
   else if (main === "plan") h += vSemana();
   else if (main === "canales") h += vCanal(sub);
-  else if (main === "resultados") h += vResultados(sub);
+  else if (main === "resultados") h += vRobotResultados();
   else h += ({ negocio: vMasNegocio, fotos: vFotos, frases: vFrases, conexiones: vMasConexiones, respaldo: vMasRespaldo })[sub]();
   $app.innerHTML = h;
   if (main === "hoy") { bind("hoy"); bindHoyNuevo(); }
   else if (main === "plan") bind("semana");
   else if (main === "canales") { bind("x"); bindCanal(sub); }
-  else if (main === "resultados") { bind("mas"); bindResultados(sub); }
+  else if (main === "resultados") bind("mas");
   else bind(sub === "fotos" ? "fotos" : sub === "frases" ? "frases" : "mas");
+  if (main === "hoy") bindImpulsos();
+  if (main === "hoy" || main === "resultados") robotFotosCargar();
+  if (main === "mas" && sub === "conexiones") bindRobotConexion();
   pintarModal();
 }
 function estadoPill(p){
@@ -554,7 +557,7 @@ function vResultadosEstadisticas(){
 }
 function vMasConexiones(){
   const ia = S.ia || {}, prov = ia.proveedor || "gemini";
-  let h = vFacebookMas();
+  let h = vRobotConexion() + vFacebookMas();
   h += '<div class="card"><h2>🤖 Conectar IA</h2><p class="muted small">Con una IA conectada puedes generar frases del mes, frases para productos nuevos, textos mirando la foto y análisis de resultados. La clave se guarda <b>solo en este celular</b> y no se incluye en los respaldos.</p>' +
     '<label>Proveedor</label><select id="iaProv">' + Object.entries(IA_DEF).map(([k, v]) => '<option value="' + k + '"' + (k === prov ? " selected" : "") + '>' + esc(v.nombre) + '</option>').join("") + '</select><p class="muted small" id="iaAyuda">' + esc(IA_DEF[prov].ayuda) + '</p>' +
     '<label>Clave de API</label><input id="iaClave" type="password" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Pega aquí tu clave" value="' + esc(ia.clave || "") + '">' + (ia.clave ? '<p class="muted small">Clave guardada: <b>' + esc(ia.clave.slice(0, 4) + "…" + ia.clave.slice(-4)) + '</b> (' + ia.clave.length + ' caracteres). No tienes que volver a pegarla.</p>' : "") + '' +
@@ -1202,11 +1205,13 @@ async function init(){
   S.ajustes = (await kvGet("ajustes")) || [];
   S.tareas = (await kvGet("tareas")) || [];
   S.mkt = Object.assign(clone(MKT_DEF), (await kvGet("mkt")) || {}); S.caja = (await kvGet("caja")) || {}; S.hechos = (await kvGet("hechos")) || {};
-  await evaluarImpulsos();
   setTimeout(() => renovarSiToca().catch(() => {}), 5000);
   S.fotos = ((await fotosAll()) || []).sort((a,b) => (b.creada||"").localeCompare(a.creada||""));
   for (const f of S.fotos) if (f.prod === undefined) { f.prod = adivinarProd(f.producto, f.categoria); const p = prodDe(f); if (p) f.categoria = p.cat; await fotoPut(f); }
   if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+  S.gh = (await kvGet("gh")) || {};
+  robotCargar().then(() => { if (!S.editing && !document.querySelector(".modal")) render(); });
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) robotCargar().then(() => { if (vista() === "hoy" && !document.querySelector(".modal")) render(); }); });
   S.fb = (await kvGet("fb")) || null; S.fbUltima = (await kvGet("fbUltima")) || 0;
   await fbActualizarEstados();
   if (S.fb && Date.now() - S.fbUltima > 6 * 3600000) setTimeout(() => fbTraerResultados(true).catch(() => {}), 3000);
