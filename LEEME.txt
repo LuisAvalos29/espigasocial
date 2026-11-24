@@ -1,7 +1,7 @@
 ESPIGA SOCIAL + ROBOT DE FACEBOOK
 
 QUÉ HACE CADA PARTE
-- El ROBOT vive en el repositorio PRIVADO espiga-robot (GitHub Actions). Nadie más ve tus fotos ni datos.
+- El ROBOT vive en el repositorio PRIVADO espigarobot (GitHub Actions). Nadie más ve tus fotos ni datos.
   Trabaja solo todos los días, aunque tu celular esté apagado:
   · 5:47 am: revisa resultados, aprende, programa en Facebook las publicaciones y Reels del día
     y sube la historia de la mañana.
@@ -16,17 +16,17 @@ QUÉ HACE CADA PARTE
 PUESTA EN MARCHA (una sola vez)
 1. Facebook: en la app, Más → Conexiones → Conectar Facebook (botón "Ver pasos").
    Ya conectado, toca "Copiar clave para el robot".
-2. GitHub: repositorio espiga-robot → Settings → Secrets and variables → Actions →
+2. GitHub: repositorio espigarobot → Settings → Secrets and variables → Actions →
    New repository secret → Nombre: FB_PAGE_TOKEN → pega la clave → Add secret.
 3. IA (opcional, recomendado): saca una clave gratis en aistudio.google.com ("Get API key")
-   y guárdala igual (en espiga-robot) como secreto con el nombre GEMINI_API_KEY.
+   y guárdala igual (en espigarobot) como secreto con el nombre GEMINI_API_KEY.
 4. Fotos: en la app, Más → Fotos (20 o más, reales). Luego Más → Conexiones →
    "Cómo sacar la clave de GitHub", pégala y toca "Enviar fotos, frases y promos al robot".
-5. Prueba: en GitHub, repositorio espiga-robot → Actions → "Robot Espiga Social" → Run workflow.
+5. Prueba: en GitHub, repositorio espigarobot → Actions → "Robot Espiga Social" → Run workflow.
    En 1-2 minutos verás en la app (Hoy) lo que programó.
 
 VIDEOS REALES PARA REELS (opcional, recomendado)
-- Sube videos verticales cortos (10-20 s) a la carpeta videos/ del repositorio espiga-robot
+- Sube videos verticales cortos (10-20 s) a la carpeta videos/ del repositorio espigarobot
   (en GitHub: Add file → Upload files). El robot los usa como Reels antes que los hechos con fotos.
 
 SI ALGO FALLA
@@ -36,4 +36,4 @@ SI ALGO FALLA
 
 DÓNDE VIVE CADA COSA
 - espigasocial (público): solo el código de la app. Sin fotos ni datos.
-- espiga-robot (privado): el robot, sus horarios, tus fotos, videos y su memoria.
+- espigarobot (privado): el robot, sus horarios, tus fotos, videos y su memoria.

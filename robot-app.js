@@ -6,7 +6,7 @@
 
 /* ---------- Leer lo que hizo el robot ---------- */
 /* El robot vive en un repositorio PRIVADO: todo se lee con tu clave de GitHub (guardada solo en este celular). */
-const ROBOT_REPO_DEF = "LuisAvalos29/espiga-robot";
+const ROBOT_REPO_DEF = "LuisAvalos29/espigarobot";
 async function ghRaw(ruta){
   const r = await fetch("https://api.github.com/repos/" + ghRepo() + "/contents/" + ruta + "?t=" + Date.now(), { headers: { Authorization: "Bearer " + S.gh.token, Accept: "application/vnd.github.raw" }, cache: "no-store" });
   if (!r.ok) throw new Error("HTTP " + r.status);
