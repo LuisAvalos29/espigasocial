@@ -412,6 +412,7 @@ function render(){
   else if (main === "resultados") bind("mas");
   else bind(sub === "fotos" ? "fotos" : sub === "frases" ? "frases" : "mas");
   if (main === "hoy") bindImpulsos();
+  if (main === "hoy" || main === "resultados") robotFotosCargar();
   if (main === "mas" && sub === "conexiones") bindRobotConexion();
   pintarModal();
 }

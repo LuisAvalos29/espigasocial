@@ -5,19 +5,37 @@
 "use strict";
 
 /* ---------- Leer lo que hizo el robot ---------- */
+/* El robot vive en un repositorio PRIVADO: todo se lee con tu clave de GitHub (guardada solo en este celular). */
+const ROBOT_REPO_DEF = "LuisAvalos29/espiga-robot";
+async function ghRaw(ruta){
+  const r = await fetch("https://api.github.com/repos/" + ghRepo() + "/contents/" + ruta + "?t=" + Date.now(), { headers: { Authorization: "Bearer " + S.gh.token, Accept: "application/vnd.github.raw" }, cache: "no-store" });
+  if (!r.ok) throw new Error("HTTP " + r.status);
+  return r;
+}
 async function robotCargar(){
-  try {
-    const r = await fetch("datos/hoy.json?t=" + Date.now(), { cache: "no-store" });
-    S.robot = r.ok ? await r.json() : null;
-  } catch(e){ S.robot = S.robot || null; }
+  if (!S.gh || !S.gh.token) { S.robot = null; S.robotCargado = true; S.robotSinClave = true; return; }
+  S.robotSinClave = false;
+  try { S.robot = await (await ghRaw("datos/hoy.json")).json(); S.robotError = ""; }
+  catch(e){ S.robotError = /401|403/.test(e.message) ? "clave" : /404/.test(e.message) ? "" : "red"; S.robot = S.robot || null; }
   S.robotCargado = true;
 }
-const robotFoto = ruta => ruta ? ruta.split("/").map(encodeURIComponent).join("/") : "";
+// Las fotos del robot son privadas: se bajan con la clave y se muestran desde la memoria del celular.
+S.robotImgs = S.robotImgs || {};
+const robotFoto = ruta => ruta ? (S.robotImgs[ruta] || "data:image/gif;base64,R0lGODlhAQABAAAAACw=") + '" data-rfoto="' + esc(ruta) : "";
+async function robotFotosCargar(){
+  const imgs = [...document.querySelectorAll("img[data-rfoto]")].filter(i => !S.robotImgs[i.dataset.rfoto]);
+  for (const img of imgs) {
+    const ruta = img.dataset.rfoto;
+    try { if (!S.robotImgs[ruta]) S.robotImgs[ruta] = URL.createObjectURL(await (await ghRaw(ruta.split("/").map(encodeURIComponent).join("/"))).blob()); document.querySelectorAll('img[data-rfoto="' + ruta + '"]').forEach(x => x.src = S.robotImgs[ruta]); } catch(e){}
+  }
+}
 const ICO_TIPO = { foto: "🖼️ Publicación", texto: "💬 Pregunta", reel: "🎬 Reel", historia: "⭕ Historia" };
 
 function vRobot(){
   const R = S.robot;
   if (!S.robotCargado) return '<div class="card muted">Revisando qué hizo el robot…</div>';
+  if (S.robotSinClave) return '<div class="card"><h2>🤖 Robot de Facebook</h2><p class="small">Para ver lo que hace el robot, pega tu <b>clave de GitHub</b> en <b>Más → Conexiones</b>.</p></div>';
+  if (S.robotError === "clave") return '<div class="card"><h2>🤖 Robot de Facebook</h2><div class="aviso err">La clave de GitHub no sirve o venció. Crea otra (Más → Conexiones → "Cómo sacar la clave").</div></div>';
   if (!R) return '<div class="card"><h2>🤖 Robot de Facebook</h2><p class="small">El robot todavía no ha trabajado. Revisa en <b>Más → Conexiones</b> que esté todo listo (clave de Facebook en GitHub y fotos enviadas).</p></div>';
   const cuando = new Date(R.generado).toLocaleString("es-MX", { dateStyle: "medium", timeStyle: "short" });
   const viejo = Date.now() - new Date(R.generado).getTime() > 36 * 3600000;
@@ -85,10 +103,7 @@ function vRobotResultados(){
 
 /* ---------- Enviar al robot (GitHub) ---------- */
 function ghRepo(){
-  const g = S.gh || {};
-  if (g.repo) return g.repo;
-  const m = location.hostname.match(/^([^.]+)\.github\.io$/), p = location.pathname.split("/").filter(Boolean)[0];
-  return m && p ? m[1] + "/" + p : "LuisAvalos29/espigasocial";
+  return (S.gh && S.gh.repo) || ROBOT_REPO_DEF;
 }
 async function ghApi(ruta, metodo = "GET", cuerpo){
   const r = await fetch("https://api.github.com/repos/" + ghRepo() + "/" + ruta, { method: metodo, headers: { Authorization: "Bearer " + S.gh.token, Accept: "application/vnd.github+json", "Content-Type": "application/json" }, body: cuerpo ? JSON.stringify(cuerpo) : undefined });
@@ -128,13 +143,14 @@ async function robotEnviar(){
       delete subidas[id];
     }
     S.gh.subidas = subidas; S.gh.ultimoEnvio = new Date().toISOString(); await kvSet("gh", S.gh);
+    await robotCargar();
     toast("✅ Listo: el robot ya tiene tus fotos y frases", 4500);
   } catch(e){ toast(e.message, 7000); }
   S.ghOcupado = false; S.ghMsg = ""; render();
 }
 function vRobotConexion(){
   const g = S.gh || {}, n = Object.keys(g.subidas || {}).length, pend = S.fotos.filter(f => !(g.subidas || {})[f.id]).length;
-  let h = '<div class="card"><h2>🤖 Robot (GitHub)</h2><p class="muted small">El robot vive en tu repositorio <b>' + esc(ghRepo()) + '</b> y publica solo en Facebook todos los días. Desde aquí le mandas tus fotos, frases, datos del negocio y promos.</p>';
+  let h = '<div class="card"><h2>🤖 Robot (GitHub)</h2><p class="muted small">El robot vive en tu repositorio <b>privado</b> ' + esc(ghRepo()) + ' (nadie más ve tus fotos ni datos) y publica solo en Facebook todos los días. Desde aquí le mandas tus fotos, frases, datos del negocio y promos.</p>';
   h += '<label style="display:flex;gap:10px;align-items:center"><input type="checkbox" id="ghActivo" style="width:auto"' + (g.activo !== false ? " checked" : "") + '> Robot encendido</label><p class="muted small">Si lo apagas, toca "Enviar al robot" para que se entere.</p>';
   if (g.token) h += '<p class="small">Clave de GitHub guardada ✅. Fotos en el robot: <b>' + n + '</b>' + (pend ? ' · <b>' + pend + ' nuevas por enviar</b>' : '') + '.' + (g.ultimoEnvio ? '<br><span class="muted">Último envío: ' + esc(new Date(g.ultimoEnvio).toLocaleString("es-MX", { dateStyle: "medium", timeStyle: "short" })) + '</span>' : '') + '</p>';
   h += '<label>Clave de GitHub ' + (g.token ? '(para cambiarla)' : '') + '</label><input id="ghToken" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="github_pat_…">';
@@ -158,7 +174,7 @@ function bindRobotConexion(){
   q("btnGhEnviar") && (q("btnGhEnviar").onclick = async () => {
     const t = limpiarClave(q("ghToken").value || "");
     if (t) { S.gh = Object.assign({}, S.gh, { token: t }); await kvSet("gh", S.gh); }
-    robotEnviar();
+    await robotEnviar();
   });
   q("btnFbCopiar") && (q("btnFbCopiar").onclick = () => { copiar(S.fb.token); toast("Clave copiada. Pégala en GitHub como FB_PAGE_TOKEN", 5000); });
 }
