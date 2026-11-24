@@ -1,5 +1,5 @@
 // Guarda la app para que abra aunque no haya internet.
-const CACHE = "espiga-social-v11";
+const CACHE = "espiga-social-v12";
 const ARCHIVOS = ["./", "index.html", "banco.js", "facebook.js", "marketing.js", "robot-app.js", "privacidad.html", "manifest.webmanifest", "icon-192.png", "icon-512.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(ARCHIVOS))); self.skipWaiting(); });
 self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k))))); self.clients.claim(); });
