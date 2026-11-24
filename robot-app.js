@@ -20,13 +20,13 @@ async function robotCargar(){
   S.robotCargado = true;
 }
 // Las fotos del robot son privadas: se bajan con la clave y se muestran desde la memoria del celular.
-S.robotImgs = S.robotImgs || {};
-const robotFoto = ruta => ruta ? (S.robotImgs[ruta] || "data:image/gif;base64,R0lGODlhAQABAAAAACw=") + '" data-rfoto="' + esc(ruta) : "";
+const robotImgs = {};
+const robotFoto = ruta => ruta ? (robotImgs[ruta] || "data:image/gif;base64,R0lGODlhAQABAAAAACw=") + '" data-rfoto="' + esc(ruta) : "";
 async function robotFotosCargar(){
-  const imgs = [...document.querySelectorAll("img[data-rfoto]")].filter(i => !S.robotImgs[i.dataset.rfoto]);
+  const imgs = [...document.querySelectorAll("img[data-rfoto]")].filter(i => !robotImgs[i.dataset.rfoto]);
   for (const img of imgs) {
     const ruta = img.dataset.rfoto;
-    try { if (!S.robotImgs[ruta]) S.robotImgs[ruta] = URL.createObjectURL(await (await ghRaw(ruta.split("/").map(encodeURIComponent).join("/"))).blob()); document.querySelectorAll('img[data-rfoto="' + ruta + '"]').forEach(x => x.src = S.robotImgs[ruta]); } catch(e){}
+    try { if (!robotImgs[ruta]) robotImgs[ruta] = URL.createObjectURL(await (await ghRaw(ruta.split("/").map(encodeURIComponent).join("/"))).blob()); document.querySelectorAll('img[data-rfoto="' + ruta + '"]').forEach(x => x.src = robotImgs[ruta]); } catch(e){}
   }
 }
 const ICO_TIPO = { foto: "🖼️ Publicación", texto: "💬 Pregunta", reel: "🎬 Reel", historia: "⭕ Historia" };
